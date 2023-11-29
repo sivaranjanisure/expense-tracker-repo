@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; // If using React Router for navigation
+import { Link, useNavigate } from "react-router-dom"; // If using React Router for navigation
 import "./Login.css";
 
 const Login = () => {
+  const navigate = useNavigate();
   // State to manage form input values
   const [formData, setFormData] = useState({
     email: "",
@@ -27,11 +28,13 @@ const Login = () => {
     // Perform authentication logic here (e.g., check credentials)
     // For simplicity, this example assumes invalid credentials result in an error message
     if (
-      formData.email === "user@example.com" &&
-      formData.password === "password"
+      formData.email === "sivvaa331998@gmail.com" &&
+      formData.password === "Shaasvik@23"
     ) {
       // Successful login, you can redirect the user or perform other actions
       console.log("Login successful!");
+      //navigate to dashboard
+      navigate("/dashboard");
     } else {
       setError("Invalid credentials. Please try again.");
     }
