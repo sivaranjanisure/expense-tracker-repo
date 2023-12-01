@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ExpenseService from "./ExpenseService"; // Your expense service handling API calls
+import { useExpenseContext } from "./ExpenseContext";
 
 const ExpenseHistory = () => {
   const [expenses, setExpenses] = useState([]);
@@ -12,7 +13,11 @@ const ExpenseHistory = () => {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // You can adjust this based on your preference
-
+  const ExpenseHistory = () => {
+    const { state } = useExpenseContext();
+    const { expenses } = state;
+    // Rest of your code...
+  };
   useEffect(() => {
     // Fetch expenses when the component mounts
     fetchData();

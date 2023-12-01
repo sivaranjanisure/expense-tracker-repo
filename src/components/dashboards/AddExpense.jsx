@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const AddExpense = ({ onAddExpense, editExpense }) => {
+  const notify = () => toast("Expense added successfully!");
   const navigate = useNavigate();
   const getCurrentDate = () => {
     const today = new Date();
@@ -30,7 +32,6 @@ const AddExpense = ({ onAddExpense, editExpense }) => {
     }
   }, [editExpense]);
 
-  const [confirmationMessage, setConfirmationMessage] = useState("");
   const [errors, setErrors] = useState({});
 
   const handleInputChange = (e) => {
@@ -47,7 +48,7 @@ const AddExpense = ({ onAddExpense, editExpense }) => {
     setExpenseData({
       expenseName: "",
       amount: "",
-      date: "",
+      date: getCurrentDate(),
       category: "",
     });
   };
@@ -79,7 +80,6 @@ const AddExpense = ({ onAddExpense, editExpense }) => {
     // For simplicity, this example assumes a successful addition
     // In a real application, you would handle errors and server communication
 
-    setConfirmationMessage("Expense added successfully!");
     setErrors({}); // Clear any previous errors
     navigate("/dashboard");
   };
@@ -149,13 +149,10 @@ const AddExpense = ({ onAddExpense, editExpense }) => {
             onChange={handleInputChange}
           />
         </div>
-        <button onClick={handleAdd}>
+        <button onClick={handleAdd} onClickCapture={notify}>
           {editExpense ? "Update Expense" : "Add Expense"}
         </button>
       </form>
-      {confirmationMessage && (
-        <p style={{ color: "green" }}>{confirmationMessage}</p>
-      )}
     </div>
   );
 };

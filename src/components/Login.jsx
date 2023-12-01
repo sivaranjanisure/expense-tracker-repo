@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; // If using React Router for navigation
 import "./Login.css";
+import { toast } from "react-toastify";
 
 const Login = () => {
+  const notify = () => toast("Login successfully!");
   const navigate = useNavigate();
   // State to manage form input values
   const [formData, setFormData] = useState({
@@ -12,6 +14,9 @@ const Login = () => {
 
   // State to manage error messages
   const [error, setError] = useState("");
+
+  // State to manage success message
+  const [successMessage, setSuccessMessage] = useState("");
 
   // Handle form input changes
   const handleInputChange = (e) => {
@@ -62,8 +67,11 @@ const Login = () => {
             onChange={handleInputChange}
           />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit" onClick={notify}>
+          Login
+        </button>
         {error && <p style={{ color: "red" }}>{error}</p>}
+        {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
       </form>
       <p>
         <Link to="/reset-password">Forgot Password?</Link>

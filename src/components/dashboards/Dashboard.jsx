@@ -2,14 +2,17 @@ import React, { useState } from "react";
 import AddExpense from "./AddExpense";
 import "./Dashboard.css";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useExpenseContext } from "./ExpenseContext";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const notify = () => toast("Expense deleted successfully!");
+  const { addExpense } = useExpenseContext();
   const [expenses, setExpenses] = useState([]);
   const [showAdd, setShowAdd] = useState(false);
-
   const [editIndex, setEditIndex] = useState(null);
-  const [confirmationMessage, setConfirmationMessage] = useState("");
+
   const changePage = () => {
     navigate("/expense-history");
   };
@@ -20,15 +23,13 @@ const Dashboard = () => {
   // Callback function to update expenses
   const handleAddExpense = (newExpense) => {
     if (editIndex !== null) {
-      // If editIndex is not null, update the expense at that index
+      // If editIndex is not null, update the expense at that index}
+
       setExpenses((prevExpenses) => {
         const updatedExpenses = [...prevExpenses];
         updatedExpenses[editIndex] = newExpense;
         return updatedExpenses;
       });
-
-      setConfirmationMessage("Expense added successfully!");
-      setShowAdd(false);
 
       setEditIndex(null); // Reset editIndex after editing
     } else {
@@ -36,6 +37,10 @@ const Dashboard = () => {
       setExpenses((prevExpenses) => [...prevExpenses, newExpense]);
     }
     setShowAdd(false);
+  };
+  // Callback function to handle deleting an expense
+  const handleDeleteExpense = (index) => {
+    setExpenses((prevExpenses) => prevExpenses.filter((_, i) => i !== index));
   };
 
   // Callback function to handle editing an expense
@@ -45,9 +50,6 @@ const Dashboard = () => {
   };
   const editExpenseData = editIndex !== null ? expenses[editIndex] : null;
   // Callback function to handle deleting an expense
-  const handleDeleteExpense = (index) => {
-    setExpenses((prevExpenses) => prevExpenses.filter((_, i) => i !== index));
-  };
 
   return (
     <div>
@@ -90,14 +92,15 @@ const Dashboard = () => {
               <p>Date: {expense?.date}</p>
               <p>Category: {expense?.category}</p>
               <button onClick={() => handleEditExpense(index)}>Edit</button>
-              <button onClick={() => handleDeleteExpense(index)}>Delete</button>
+              <button
+                onClick={() => handleDeleteExpense(index)}
+                onClickCapture={notify}
+              >
+                Delete
+              </button>
             </div>
           ))}
       </div>
-      {/* Display confirmation message */}
-      {confirmationMessage && (
-        <p style={{ color: "green" }}>{confirmationMessage}</p>
-      )}
     </div>
   );
 };
