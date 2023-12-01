@@ -1,68 +1,103 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import PieChart from "./PieChart"; // You'll need a library or component for the pie chart
-import ExpenseService from "./ExpenseService"; // Your expense service handling API calls
+import React, { useState } from "react";
+import AddExpense from "./AddExpense";
+import "./Dashboard.css";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
-  const [totalExpense, setTotalExpense] = useState(0);
-  const [expenseByCategories, setExpenseByCategories] = useState([]);
-  const [recentTransactions, setRecentTransactions] = useState([]);
+  const navigate = useNavigate();
+  const [expenses, setExpenses] = useState([]);
+  const [showAdd, setShowAdd] = useState(false);
 
-  useEffect(() => {
-    // Fetch and update expense-related data when the component mounts
-    fetchData();
-  }, []);
+  const [editIndex, setEditIndex] = useState(null);
+  const [confirmationMessage, setConfirmationMessage] = useState("");
+  const changePage = () => {
+    navigate("/expense-history");
+  };
 
-  const fetchData = async () => {
-    try {
-      // Fetch total expense for the current month
-      const totalExpenseResult = await ExpenseService.getTotalExpense();
-      setTotalExpense(totalExpenseResult);
+  const changereport = () => {
+    navigate("/reportspage");
+  };
+  // Callback function to update expenses
+  const handleAddExpense = (newExpense) => {
+    if (editIndex !== null) {
+      // If editIndex is not null, update the expense at that index
+      setExpenses((prevExpenses) => {
+        const updatedExpenses = [...prevExpenses];
+        updatedExpenses[editIndex] = newExpense;
+        return updatedExpenses;
+      });
 
-      // Fetch expenses by categories
-      const expenseByCategoriesResult =
-        await ExpenseService.getExpenseByCategories();
-      setExpenseByCategories(expenseByCategoriesResult);
+      setConfirmationMessage("Expense added successfully!");
+      setShowAdd(false);
 
-      // Fetch recent transactions
-      const recentTransactionsResult =
-        await ExpenseService.getRecentTransactions();
-      setRecentTransactions(recentTransactionsResult);
-    } catch (error) {
-      console.error("Error fetching data:", error);
+      setEditIndex(null); // Reset editIndex after editing
+    } else {
+      // If editIndex is null, add a new expense
+      setExpenses((prevExpenses) => [...prevExpenses, newExpense]);
     }
+    setShowAdd(false);
+  };
+
+  // Callback function to handle editing an expense
+  const handleEditExpense = (index) => {
+    setEditIndex(index);
+    setShowAdd(true);
+  };
+  const editExpenseData = editIndex !== null ? expenses[editIndex] : null;
+  // Callback function to handle deleting an expense
+  const handleDeleteExpense = (index) => {
+    setExpenses((prevExpenses) => prevExpenses.filter((_, i) => i !== index));
   };
 
   return (
     <div>
       <h2>Dashboard</h2>
       <div>
-        <p>Total Expense for the Current Month: ${totalExpense}</p>
+        {/* Link to AddExpense page */}
+        <button className="b1" onClick={() => setShowAdd(true)}>
+          Add New Expense
+        </button>
       </div>
       <div>
-        <h3>Expense by Categories (Pie Chart)</h3>
-        {/* Render your pie chart component here using expenseByCategories */}
-        <PieChart data={expenseByCategories} />
+        {/* Link to AddExpense page */}
+        <button className="b1" onClick={() => changePage()}>
+          Expense History
+        </button>
       </div>
       <div>
-        <h3>Recent Transactions</h3>
-        <ul>
-          {recentTransactions.map((transaction) => (
-            <li key={transaction.id}>
-              {transaction.description} - ${transaction.amount}
-              {/* Add edit and delete buttons with appropriate actions */}
-              <button>Edit</button>
-              <button>Delete</button>
-            </li>
+        {/* Link to AddExpense page */}
+        <button className="b1" onClick={() => changereport()}>
+          Reports
+        </button>
+      </div>
+
+      {/* AddExpense component with callback */}
+      {showAdd && (
+        <AddExpense
+          onAddExpense={handleAddExpense}
+          editExpense={editExpenseData}
+        />
+      )}
+
+      <div className="expense-grid">
+        {/* Display added expenses */}
+        {expenses.length > 0 &&
+          expenses.map((expense, index) => (
+            <div key={index} className="expense-box">
+              {/* Display expense details, edit, and delete options */}
+              <p>Expense Name: {expense?.expenseName}</p>
+              <p>Amount: {expense?.amount}</p>
+              <p>Date: {expense?.date}</p>
+              <p>Category: {expense?.category}</p>
+              <button onClick={() => handleEditExpense(index)}>Edit</button>
+              <button onClick={() => handleDeleteExpense(index)}>Delete</button>
+            </div>
           ))}
-        </ul>
       </div>
-      <div>
-        {/* Link or button to add a new expense */}
-        <Link to="/addexpense">Add New Expense</Link>
-        {/* You can also use a button with an onClick event to navigate */}
-        {/* <button onClick={() => history.push('/add-expense')}>Add New Expense</button> */}
-      </div>
+      {/* Display confirmation message */}
+      {confirmationMessage && (
+        <p style={{ color: "green" }}>{confirmationMessage}</p>
+      )}
     </div>
   );
 };

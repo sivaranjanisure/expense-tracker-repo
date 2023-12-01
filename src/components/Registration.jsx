@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; 
 import "./Registration.css";
 
 const Registration = () => {
@@ -7,7 +8,7 @@ const Registration = () => {
     password: "",
     username: "",
   });
-
+  const navigate = useNavigate();
   const [error, setError] = useState("");
 
   const handleInputChange = (e) => {
@@ -26,6 +27,7 @@ const Registration = () => {
     if (isValid) {
       // Registration successful, you can proceed with further actions (e.g., API call)
       console.log("Registration successful!", formData);
+      navigate("/login");
     }
   };
 
