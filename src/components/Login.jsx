@@ -18,6 +18,12 @@ const Login = () => {
   // State to manage success message
   const [successMessage, setSuccessMessage] = useState("");
 
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -59,17 +65,27 @@ const Login = () => {
           />
         </div>
         <div>
-          <label>Password:</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-          />
+          <label htmlFor="password">Password:</label>
+          <div class="password-input-wrapper">
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+            />{" "}
+            <span
+              className="toggle-password"
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? "Hide" : "Show"}
+            </span>{" "}
+          </div>
         </div>
         <button type="submit" onClick={notify}>
           Login
         </button>
+
         {error && <p style={{ color: "red" }}>{error}</p>}
         {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
       </form>

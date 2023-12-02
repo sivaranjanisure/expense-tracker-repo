@@ -1,14 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AddExpense from "./AddExpense";
 import "./Dashboard.css";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useExpenseContext } from "./ExpenseContext";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const notify = () => toast("Expense deleted successfully!");
-  const { addExpense } = useExpenseContext();
+
+  // Load expenses from localStorage on component mount
+  useEffect(() => {
+    const storedExpenses = localStorage.getItem("expenses");
+    console.log("Stored Expenses:", storedExpenses);
+    if (storedExpenses) {
+      setExpenses(JSON.parse(storedExpenses));
+    }
+  }, []);
+
   const [expenses, setExpenses] = useState([]);
   const [showAdd, setShowAdd] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
@@ -20,11 +28,17 @@ const Dashboard = () => {
   const changereport = () => {
     navigate("/reportspage");
   };
+
+  // Save expenses to localStorage whenever expenses change
+  useEffect(() => {
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+    console.log("Expenses saved to localStorage:", expenses);
+  }, [expenses]);
+
   // Callback function to update expenses
   const handleAddExpense = (newExpense) => {
     if (editIndex !== null) {
       // If editIndex is not null, update the expense at that index}
-
       setExpenses((prevExpenses) => {
         const updatedExpenses = [...prevExpenses];
         updatedExpenses[editIndex] = newExpense;
@@ -38,6 +52,7 @@ const Dashboard = () => {
     }
     setShowAdd(false);
   };
+
   // Callback function to handle deleting an expense
   const handleDeleteExpense = (index) => {
     setExpenses((prevExpenses) => prevExpenses.filter((_, i) => i !== index));
@@ -49,7 +64,6 @@ const Dashboard = () => {
     setShowAdd(true);
   };
   const editExpenseData = editIndex !== null ? expenses[editIndex] : null;
-  // Callback function to handle deleting an expense
 
   return (
     <div>

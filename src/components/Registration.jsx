@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 import "./Registration.css";
 
 const Registration = () => {
@@ -10,6 +10,12 @@ const Registration = () => {
   });
   const navigate = useNavigate();
   const [error, setError] = useState("");
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -68,14 +74,23 @@ const Registration = () => {
             onChange={handleInputChange}
           />
         </div>
-        <div>
+        <div className="password-input-container">
           <label>Password:</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-          />
+          <div className="password-input-wrapper">
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+            />
+            <span
+              className="toggle-password"
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? "Hide" : "Show"}
+            </span>
+          </div>
         </div>
         <div>
           <label>Username:</label>

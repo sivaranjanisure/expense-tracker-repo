@@ -1,7 +1,6 @@
 import MainRoutes from "./MainRoutes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ExpenseContextProvider } from "./path-to-your-ExpenseContextProvider";
 
 function App() {
   return (
@@ -16,12 +15,9 @@ function App() {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="light"
+        theme="dark"
       />
       <MainRoutes />
-      <ExpenseContextProvider>
-        {/* Your component tree */}
-      </ExpenseContextProvider>
     </>
   );
 }

@@ -71,3 +71,25 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+.password-input-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.password-input-wrapper {
+  position: relative;
+}
+
+#password {
+  padding-right: 30px; /* Add space for the show/hide button */
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
