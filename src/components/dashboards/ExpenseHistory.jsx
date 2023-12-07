@@ -3,11 +3,13 @@ import React, { useState, useEffect } from "react";
 import ExpenseList from "./ExpenseList";
 import FilterOptions from "./FilterOptions";
 import Pagination from "./Pagination";
+import ExpenseEditForm from "./ExpenseEditForm"; // Import the new component
 
 const ExpenseHistory = () => {
   const [expenses, setExpenses] = useState([]); // Fetch from API or localStorage
   const [filteredExpenses, setFilteredExpenses] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [editIndex, setEditIndex] = useState(null);
   const expensesPerPage = 5;
 
   useEffect(() => {
@@ -94,20 +96,19 @@ const ExpenseHistory = () => {
   };
 
   // Handle editing an expense
-  const handleEditExpense = (id) => {
-    console.log("Edit expense with id", id);
-    // Implement logic to edit expense by id
+  const handleEditExpense = (index) => {
+    setEditIndex(index);
+  };
 
-    // Example: Update the expense with the new data
-    const updatedExpenses = expenses.map((expense) =>
-      expense.id === id
-        ? { ...expense, expenseName: "Updated Expense" }
-        : expense
-    );
-
-    // Update the state
+  // Handle saving edited expense
+  const handleSaveEdit = (editedExpense) => {
+    // Implement logic to save edited expense
+    // Update expenses and filteredExpenses state accordingly
+    const updatedExpenses = [...expenses];
+    updatedExpenses[editIndex] = editedExpense;
     setExpenses(updatedExpenses);
     setFilteredExpenses(updatedExpenses);
+    setEditIndex(null);
   };
 
   // Handle deleting an expense
@@ -127,18 +128,28 @@ const ExpenseHistory = () => {
     <div>
       <h2>Expense History</h2>
       <FilterOptions onFilterChange={handleFilter} />
-      <ExpenseList
-        expenses={filteredExpenses}
-        onDeleteExpense={handleDeleteExpense}
-        onEditExpense={handleEditExpense}
-        currentPage={currentPage}
-        expensesPerPage={expensesPerPage}
-      />
-      <Pagination
-        expensesPerPage={expensesPerPage}
-        totalExpenses={filteredExpenses.length}
-        paginate={paginate}
-      />
+      {editIndex !== null ? (
+        // Display the expense edit form when in edit mode
+        <ExpenseEditForm
+          expense={expenses[editIndex]}
+          onSaveEdit={handleSaveEdit}
+        />
+      ) : (
+        <>
+          <ExpenseList
+            expenses={filteredExpenses}
+            onDeleteExpense={handleDeleteExpense}
+            currentPage={currentPage}
+            expensesPerPage={expensesPerPage}
+            onEditExpense={handleEditExpense} // Pass the onEditExpense callback
+          />
+          <Pagination
+            expensesPerPage={expensesPerPage}
+            totalExpenses={filteredExpenses.length}
+            paginate={paginate}
+          />
+        </>
+      )}
     </div>
   );
 };

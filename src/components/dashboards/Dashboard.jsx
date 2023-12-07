@@ -40,23 +40,22 @@ const Dashboard = () => {
   // Callback function to update expenses
   const handleAddExpense = (newExpense) => {
     setShowPieChart(false); // Hide pie chart when adding/editing expenses
+
+    if (editIndex !== null) {
+      // If editIndex is not null, update the expense at that index}
+      setExpenses((prevExpenses) => {
+        const updatedExpenses = [...prevExpenses];
+        updatedExpenses[editIndex] = newExpense;
+        return updatedExpenses;
+      });
+
+      setEditIndex(null); // Reset editIndex after editing
+    } else {
+      // If editIndex is null, add a new expense
+      setExpenses((prevExpenses) => [...prevExpenses, newExpense]);
+    }
+    setShowAdd(false);
   };
-
-  //   if (editIndex !== null) {
-  //     // If editIndex is not null, update the expense at that index}
-  //     setExpenses((prevExpenses) => {
-  //       const updatedExpenses = [...prevExpenses];
-  //       updatedExpenses[editIndex] = newExpense;
-  //       return updatedExpenses;
-  //     });
-
-  //     setEditIndex(null); // Reset editIndex after editing
-  //   } else {
-  //     // If editIndex is null, add a new expense
-  //     setExpenses((prevExpenses) => [...prevExpenses, newExpense]);
-  //   }
-  //   setShowAdd(false);
-  // };
 
   // Callback function to handle deleting an expense
   const handleDeleteExpense = (index) => {
