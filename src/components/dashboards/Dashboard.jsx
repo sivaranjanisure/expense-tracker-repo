@@ -3,6 +3,7 @@ import AddExpense from "./AddExpense";
 import "./Dashboard.css";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import PieChart from "./PieChart"; // Import without curly braces
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ const Dashboard = () => {
   const [expenses, setExpenses] = useState([]);
   const [showAdd, setShowAdd] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
+  const [showPieChart, setShowPieChart] = useState(false); // New state variable
 
   const changePage = () => {
     navigate("/expense-history");
@@ -37,21 +39,24 @@ const Dashboard = () => {
 
   // Callback function to update expenses
   const handleAddExpense = (newExpense) => {
-    if (editIndex !== null) {
-      // If editIndex is not null, update the expense at that index}
-      setExpenses((prevExpenses) => {
-        const updatedExpenses = [...prevExpenses];
-        updatedExpenses[editIndex] = newExpense;
-        return updatedExpenses;
-      });
-
-      setEditIndex(null); // Reset editIndex after editing
-    } else {
-      // If editIndex is null, add a new expense
-      setExpenses((prevExpenses) => [...prevExpenses, newExpense]);
-    }
-    setShowAdd(false);
+    setShowPieChart(false); // Hide pie chart when adding/editing expenses
   };
+
+  //   if (editIndex !== null) {
+  //     // If editIndex is not null, update the expense at that index}
+  //     setExpenses((prevExpenses) => {
+  //       const updatedExpenses = [...prevExpenses];
+  //       updatedExpenses[editIndex] = newExpense;
+  //       return updatedExpenses;
+  //     });
+
+  //     setEditIndex(null); // Reset editIndex after editing
+  //   } else {
+  //     // If editIndex is null, add a new expense
+  //     setExpenses((prevExpenses) => [...prevExpenses, newExpense]);
+  //   }
+  //   setShowAdd(false);
+  // };
 
   // Callback function to handle deleting an expense
   const handleDeleteExpense = (index) => {
@@ -62,8 +67,20 @@ const Dashboard = () => {
   const handleEditExpense = (index) => {
     setEditIndex(index);
     setShowAdd(true);
+
+    setShowPieChart(false); // Hide pie chart when editing expenses
   };
   const editExpenseData = editIndex !== null ? expenses[editIndex] : null;
+
+  const chartData = {
+    labels: ["Entertainment", "food", "Transportation"],
+    datasets: [
+      {
+        data: [300, 500, 2000], // Example data values
+        backgroundColor: ["red", "green", "blue"], // Example colors
+      },
+    ],
+  };
 
   return (
     <div>
@@ -80,12 +97,28 @@ const Dashboard = () => {
           Expense History
         </button>
       </div>
+
       <div>
         {/* Link to AddExpense page */}
         <button className="b1" onClick={() => changereport()}>
           Reports
         </button>
       </div>
+      <div>
+        {/* Button to toggle pie chart visibility */}
+        <button className="b1" onClick={() => setShowPieChart(!showPieChart)}>
+          {showPieChart
+            ? "Hide graphical representation"
+            : "Show graphical representation"}
+        </button>
+      </div>
+      {/* Conditionally render pie chart based on showPieChart state */}
+      {showPieChart && (
+        <div>
+          <h1>Graphical representation</h1>
+          <PieChart data={chartData} />
+        </div>
+      )}
 
       {/* AddExpense component with callback */}
       {showAdd && (

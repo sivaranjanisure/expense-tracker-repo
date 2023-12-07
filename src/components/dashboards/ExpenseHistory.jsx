@@ -1,157 +1,144 @@
+// ExpenseHistory.jsx
 import React, { useState, useEffect } from "react";
-import ExpenseService from "./ExpenseService"; // Your expense service handling API calls
+import ExpenseList from "./ExpenseList";
+import FilterOptions from "./FilterOptions";
+import Pagination from "./Pagination";
 
 const ExpenseHistory = () => {
-  const [expenses, setExpenses] = useState([]);
+  const [expenses, setExpenses] = useState([]); // Fetch from API or localStorage
   const [filteredExpenses, setFilteredExpenses] = useState([]);
-  const [filterOptions, setFilterOptions] = useState({
-    startDate: null,
-    endDate: null,
-    category: "",
-    searchTerm: "",
-  });
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // You can adjust this based on your preference
+  const expensesPerPage = 5;
 
   useEffect(() => {
-    // Fetch expenses when the component mounts
-    fetchData();
+    // Fetch expenses from API or localStorage and setExpenses
+    // For now, using an example array
+    const exampleExpenses = [
+      {
+        id: 1,
+        expenseName: "Lunch at McDonald's",
+        amount: 400,
+        date: "2023-12-01",
+        category: "Food",
+      },
+      {
+        id: 2,
+        expenseName: "Trip to Goa",
+        amount: 10000,
+        date: "2023-12-08",
+        category: "travel",
+      },
+      {
+        id: 3,
+        expenseName: "Movie at KG cinema",
+        amount: 400,
+        date: "2023-12-01",
+        category: "Entertainment",
+      },
+      {
+        id: 4,
+        expenseName: "Fit gym",
+        amount: 5500,
+        date: "2023-11-15",
+        category: "Health",
+      },
+      {
+        id: 5,
+        expenseName: "KMCH Hospital",
+        amount: 7000,
+        date: "2023-12-05",
+        category: "Health",
+      },
+      {
+        id: 6,
+        expenseName: "Dinner at KFC",
+        amount: 600,
+        date: "2023-11-01",
+        category: "Food",
+      },
+      {
+        id: 7,
+        expenseName: "Visit Ooty",
+        amount: 4500,
+        date: "2023-10-18",
+        category: "travel",
+      },
+      {
+        id: 8,
+        expenseName: "LIC",
+        amount: 1200,
+        date: "2023-10-25",
+        category: "Health",
+      },
+      {
+        id: 9,
+        expenseName: "Dinner at Dominos",
+        amount: 900,
+        date: "2023-11-03",
+        category: "Food",
+      },
+
+      // Add more expenses
+    ];
+    setExpenses(exampleExpenses);
+    setFilteredExpenses(exampleExpenses);
   }, []);
 
-  const fetchData = async () => {
-    try {
-      // Fetch all expenses
-      const expensesResult = await ExpenseService.getAllExpenses();
-      setExpenses(expensesResult);
+  // Pagination - Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-      // Apply initial filtering based on filterOptions
-      applyFilters();
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
+  // Handle filtering expenses based on date range, category, or search term
+  const handleFilter = (filterType, filterValue) => {
+    // Implement logic to filter expenses
+    // Update filteredExpenses state accordingly
   };
 
-  const applyFilters = () => {
-    // Apply filtering based on filterOptions
-    let filteredData = expenses;
+  // Handle editing an expense
+  const handleEditExpense = (id) => {
+    console.log("Edit expense with id", id);
+    // Implement logic to edit expense by id
 
-    if (filterOptions.startDate) {
-      filteredData = filteredData.filter(
-        (expense) => new Date(expense.date) >= new Date(filterOptions.startDate)
-      );
-    }
+    // Example: Update the expense with the new data
+    const updatedExpenses = expenses.map((expense) =>
+      expense.id === id
+        ? { ...expense, expenseName: "Updated Expense" }
+        : expense
+    );
 
-    if (filterOptions.endDate) {
-      filteredData = filteredData.filter(
-        (expense) => new Date(expense.date) <= new Date(filterOptions.endDate)
-      );
-    }
-
-    if (filterOptions.category) {
-      filteredData = filteredData.filter(
-        (expense) => expense.category === filterOptions.category
-      );
-    }
-
-    if (filterOptions.searchTerm) {
-      const searchTermLower = filterOptions.searchTerm.toLowerCase();
-      filteredData = filteredData.filter(
-        (expense) =>
-          expense.expenseName.toLowerCase().includes(searchTermLower) ||
-          expense.category.toLowerCase().includes(searchTermLower)
-      );
-    }
-
-    setFilteredExpenses(filteredData);
-    setCurrentPage(1); // Reset to the first page after applying filters
+    // Update the state
+    setExpenses(updatedExpenses);
+    setFilteredExpenses(updatedExpenses);
   };
 
-  const handleFilterChange = (name, value) => {
-    setFilterOptions({
-      ...filterOptions,
-      [name]: value,
-    });
-  };
+  // Handle deleting an expense
+  const handleDeleteExpense = (id) => {
+    console.log("Delete expense with id", id);
+    // Implement logic to delete expense by id
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
+    // Example: Remove the expense with the given id
+    const updatedExpenses = expenses.filter((expense) => expense.id !== id);
 
-  const handleEditExpense = (expenseId) => {
-    // Implement logic to navigate to the edit expense page
-    console.log(`Edit expense with ID: ${expenseId}`);
-  };
-
-  const handleDeleteExpense = (expenseId) => {
-    // Implement logic to delete the expense with the given ID
-    console.log(`Delete expense with ID: ${expenseId}`);
+    // Update the state
+    setExpenses(updatedExpenses);
+    setFilteredExpenses(updatedExpenses);
   };
 
   return (
     <div>
       <h2>Expense History</h2>
-      {/* Filtering options */}
-      <div>
-        <label>Start Date:</label>
-        <input
-          type="date"
-          value={filterOptions.startDate || ""}
-          onChange={(e) => handleFilterChange("startDate", e.target.value)}
-        />
-        <label>End Date:</label>
-        <input
-          type="date"
-          value={filterOptions.endDate || ""}
-          onChange={(e) => handleFilterChange("endDate", e.target.value)}
-        />
-        <label>Category:</label>
-        <input
-          type="text"
-          value={filterOptions.category || ""}
-          onChange={(e) => handleFilterChange("category", e.target.value)}
-        />
-        <label>Search Term:</label>
-        <input
-          type="text"
-          value={filterOptions.searchTerm || ""}
-          onChange={(e) => handleFilterChange("searchTerm", e.target.value)}
-        />
-        <button onClick={applyFilters}>Apply Filters</button>
-      </div>
-      {/* Display filtered expenses with pagination */}
-      <div>
-        <ul>
-          {filteredExpenses
-            .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
-            .map((expense) => (
-              <li key={expense.id}>
-                {/* Display expense details */}
-                <p>Expense Name: {expense.expenseName}</p>
-                <p>Amount: {expense.amount}</p>
-                <p>Date: {expense.date}</p>
-                <p>Category: {expense.category}</p>
-                {/* Edit and Delete options */}
-                <button onClick={() => handleEditExpense(expense.id)}>
-                  Edit
-                </button>
-                <button onClick={() => handleDeleteExpense(expense.id)}>
-                  Delete
-                </button>
-              </li>
-            ))}
-        </ul>
-      </div>
-      {/* Pagination */}
-      <div>
-        {Array.from(
-          { length: Math.ceil(filteredExpenses.length / itemsPerPage) },
-          (_, index) => (
-            <button key={index + 1} onClick={() => handlePageChange(index + 1)}>
-              {index + 1}
-            </button>
-          )
-        )}
-      </div>
+      <FilterOptions onFilterChange={handleFilter} />
+      <ExpenseList
+        expenses={filteredExpenses}
+        onDeleteExpense={handleDeleteExpense}
+        onEditExpense={handleEditExpense}
+        currentPage={currentPage}
+        expensesPerPage={expensesPerPage}
+      />
+      <Pagination
+        expensesPerPage={expensesPerPage}
+        totalExpenses={filteredExpenses.length}
+        paginate={paginate}
+      />
     </div>
   );
 };

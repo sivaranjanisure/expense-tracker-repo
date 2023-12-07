@@ -47,6 +47,8 @@ const ResetPassword = () => {
     navigate("/login");
   };
 
+  // Handle reset button click
+
   return (
     <div>
       <h2>Reset Password</h2>

@@ -1,6 +1,7 @@
 import MainRoutes from "./MainRoutes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "chart.js/auto";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         pauseOnHover
         theme="dark"
       />
+
       <MainRoutes />
     </>
   );

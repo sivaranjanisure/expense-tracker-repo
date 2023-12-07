@@ -50,11 +50,23 @@ const Login = () => {
       setError("Invalid credentials. Please try again.");
     }
   };
+  // Handle reset button click
+  const handleReset = () => {
+    // Reset the email and password fields
+    setFormData({
+      email: "",
+      password: "",
+    });
+
+    // Clear error and success messages
+    setError("");
+    setSuccessMessage("");
+  };
 
   return (
     <div>
       <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
+      <form id="loginForm" onSubmit={handleSubmit}>
         <div>
           <label>Email:</label>
           <input
@@ -66,7 +78,7 @@ const Login = () => {
         </div>
         <div>
           <label htmlFor="password">Password:</label>
-          <div class="password-input-wrapper">
+          <div className="password-input-wrapper">
             <input
               type={showPassword ? "text" : "password"}
               id="password"
@@ -82,6 +94,9 @@ const Login = () => {
             </span>{" "}
           </div>
         </div>
+        <button className="resetbutton" type="button" onClick={handleReset}>
+          reset
+        </button>
         <button type="submit" onClick={notify}>
           Login
         </button>
@@ -92,6 +107,7 @@ const Login = () => {
       <p>
         <Link to="/reset-password">Forgot Password?</Link>
       </p>
+
       <p>
         New user? <Link to="/register">Register here</Link>.
       </p>

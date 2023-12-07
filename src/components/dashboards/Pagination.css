@@ -1,0 +1,8 @@
+.pagination {
+  display: flex;
+  color: white;
+}
+
+.buttonone {
+  background-color: blueviolet;
+}

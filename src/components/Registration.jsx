@@ -101,6 +101,7 @@ const Registration = () => {
             onChange={handleInputChange}
           />
         </div>
+
         <button type="submit">Register</button>
         {error && <p style={{ color: "red" }}>{error}</p>}
       </form>
