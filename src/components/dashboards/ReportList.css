@@ -1,0 +1,27 @@
+table,
+td,
+th {
+  border: 2px solid black;
+  font-size: medium;
+  height: 70px;
+  padding: 3px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td {
+  text-align: center;
+  background-color: burlywood;
+  color: black;
+}
+th {
+  background-color: cornflowerblue;
+  color: black;
+}
+.foot {
+  background-color: cornflowerblue;
+  color: black;
+}

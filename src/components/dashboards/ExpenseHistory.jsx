@@ -19,21 +19,21 @@ const ExpenseHistory = () => {
       {
         id: 1,
         expenseName: "Lunch at McDonald's",
-        amount: 400,
+        amount: 1000,
         date: "2023-12-01",
         category: "Food",
       },
       {
         id: 2,
         expenseName: "Trip to Goa",
-        amount: 10000,
+        amount: 7000,
         date: "2023-12-08",
         category: "travel",
       },
       {
         id: 3,
         expenseName: "Movie at KG cinema",
-        amount: 400,
+        amount: 2000,
         date: "2023-12-01",
         category: "Entertainment",
       },
@@ -48,7 +48,7 @@ const ExpenseHistory = () => {
         id: 5,
         expenseName: "KMCH Hospital",
         amount: 7000,
-        date: "2023-12-05",
+        date: "2023-11-05",
         category: "Health",
       },
       {
@@ -76,7 +76,7 @@ const ExpenseHistory = () => {
         id: 9,
         expenseName: "Dinner at Dominos",
         amount: 900,
-        date: "2023-11-03",
+        date: "2023-10-03",
         category: "Food",
       },
 
@@ -89,10 +89,36 @@ const ExpenseHistory = () => {
   // Pagination - Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Handle filtering expenses based on date range, category, or search term
   const handleFilter = (filterType, filterValue) => {
-    // Implement logic to filter expenses
+    // Create a copy of the original expenses
+    let filteredExpenses = [...expenses];
+
+    // Implement logic to filter expenses based on filterType and filterValue
+    if (filterType === "dateRange") {
+      // Example: Filter by date range
+      filteredExpenses = filteredExpenses.filter(
+        (expense) =>
+          new Date(expense.date) >= new Date(filterValue.startDate) &&
+          new Date(expense.date) <= new Date(filterValue.endDate)
+      );
+    } else if (filterType === "category") {
+      // Example: Filter by category
+      filteredExpenses = filteredExpenses.filter(
+        (expense) =>
+          expense.category.toLowerCase() === filterValue.toLowerCase()
+      );
+    } else if (filterType === "searchTerm") {
+      // Example: Filter by search term in expenseName
+      filteredExpenses = filteredExpenses.filter((expense) =>
+        expense.expenseName.toLowerCase().includes(filterValue.toLowerCase())
+      );
+    }
+
     // Update filteredExpenses state accordingly
+    setFilteredExpenses(filteredExpenses);
+
+    // Reset current page to 1 after applying a filter
+    setCurrentPage(1);
   };
 
   // Handle editing an expense

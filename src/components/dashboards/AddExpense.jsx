@@ -122,7 +122,7 @@ const AddExpense = ({ onAddExpense, editExpense }) => {
         <div>
           <label>Amount:</label>
           <input
-            type="text"
+            type="number"
             name="amount"
             value={expenseData.amount}
             onChange={handleInputChange}

@@ -1,44 +1,36 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+const ReportsPage = ({ expenses }) => {
+  const [selectedMonth, setSelectedMonth] = useState(""); // State to track the selected month
+  const navigate = useNavigate();
 
-const ReportsPage = () => {
-  const [expenses, setExpenses] = useState([]);
-  const [reportData, setReportData] = useState({}); // State to hold report data
-
-  // Fetch data function (replace with your actual data fetching logic)
-  const fetchData = async () => {
-    // Example: Fetch expenses from an API
-    const response = await fetch("/api/expenses");
-    const data = await response.json();
-    setExpenses(data);
+  const PageTransition = () => {
+    navigate("/reportlist");
   };
-
-  // useEffect to fetch data when the component mounts
-  useEffect(() => {
-    fetchData();
-  }, []); // Empty dependency array to run once on mount
-
-  // Function to generate the report data
-  const generateReportData = () => {
-    // Implement your logic using the expenses state
-    // Example: Set report data based on expenses
-    const totalExpenses = expenses.reduce(
-      (acc, expense) => acc + expense.amount,
-      0
+  // Function to generate monthly report
+  const generateMonthlyReport = () => {
+    // Filter expenses for the selected month
+    const expensesInSelectedMonth = expenses.filter(
+      (expense) => expense.date.slice(0, 7) === selectedMonth // Assuming date format is "YYYY-MM-DD"
     );
-    setReportData({ totalExpenses });
-  };
 
-  // Call generateReportData when expenses change
-  useEffect(() => {
-    generateReportData();
-  }, [expenses]);
+    // Perform logic to generate and display the report
+    // You can use a charting library for the bar graph and list total expenses by category
+    // For simplicity, let's just log the filtered expenses for now
+    console.log("Monthly Report:", expensesInSelectedMonth);
+  };
 
   return (
     <div>
-      <h2>Reports Page</h2>
-      {/* Display your report data */}
-      <p>Total Expenses: ${reportData.totalExpenses}</p>
-      {/* Other report display logic */}
+      <h1>Reports Page</h1>
+      <label>Select Month: </label>
+      <input
+        type="month"
+        value={selectedMonth}
+        onChange={(e) => setSelectedMonth(e.target.value)}
+      />
+      <button onClick={() => PageTransition()}>Generate Report</button>
+      {/* Add the components or charts to display the report */}
     </div>
   );
 };
