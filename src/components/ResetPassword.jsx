@@ -23,14 +23,10 @@ const ResetPassword = () => {
 
   const handleReset = async (e) => {
     e.preventDefault();
-
-    // Check if new password and confirm password match
     if (password !== confirmPassword) {
       setGeneralError("Confirm password is incorrect");
       return;
     }
-
-    // Check password strength
     const passwordStrengthRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(.{8,})$/;
     if (!passwordStrengthRegex.test(password)) {
       setPasswordError(
@@ -39,15 +35,9 @@ const ResetPassword = () => {
       return;
     }
 
-    // Perform password reset logic (you may need to call a server API)
-    // For simplicity, this example assumes a successful reset
-    // In a real application, you would handle errors and server communication
-
     setResetStatus("Password reset successful!");
     navigate("/login");
   };
-
-  // Handle reset button click
 
   return (
     <div>
@@ -110,7 +100,9 @@ const ResetPassword = () => {
             </div>
           </div>
           {generalError && <p className="error-message">{generalError}</p>}
-          <button type="submit">Reset Password</button>
+          <button className="logBtn" type="submit">
+            Reset Password
+          </button>
         </form>
       )}
     </div>

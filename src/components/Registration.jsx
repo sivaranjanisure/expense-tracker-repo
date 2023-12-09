@@ -102,7 +102,9 @@ const Registration = () => {
           />
         </div>
 
-        <button type="submit">Register</button>
+        <button className="logBtn" type="submit">
+          Register
+        </button>
         {error && <p style={{ color: "red" }}>{error}</p>}
       </form>
     </div>

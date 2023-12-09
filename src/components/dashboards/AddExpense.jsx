@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const AddExpense = ({ onAddExpense, editExpense }) => {
+const AddExpense = () => {
   const notify = () => toast("Expense added successfully!");
+  const notifyDelete = () => toast("Expense deleted successfully!");
   const navigate = useNavigate();
+  const [expenses, setExpenses] = useState([]);
+  const [editIndex, setEditIndex] = useState(null);
   const getCurrentDate = () => {
     const today = new Date();
     const year = today.getFullYear();
@@ -20,18 +23,6 @@ const AddExpense = ({ onAddExpense, editExpense }) => {
     category: "",
   });
 
-  useEffect(() => {
-    // If there is an editExpense, pre-fill the fields
-    if (editExpense) {
-      setExpenseData({
-        expenseName: editExpense.expenseName,
-        amount: editExpense.amount,
-        date: editExpense.date,
-        category: editExpense.category,
-      });
-    }
-  }, [editExpense]);
-
   const [errors, setErrors] = useState({});
 
   const handleInputChange = (e) => {
@@ -39,17 +30,6 @@ const AddExpense = ({ onAddExpense, editExpense }) => {
     setExpenseData({
       ...expenseData,
       [name]: value,
-    });
-  };
-
-  const handleAdd = () => {
-    onAddExpense(expenseData);
-    // Reset form fields after adding/editing expense
-    setExpenseData({
-      expenseName: "",
-      amount: "",
-      date: getCurrentDate(),
-      category: "",
     });
   };
 
@@ -69,10 +49,19 @@ const AddExpense = ({ onAddExpense, editExpense }) => {
       date: expenseData?.date,
       category: expenseData?.category,
     };
+    if (editIndex !== null) {
+      // If editIndex is not null, update the expense at that index}
+      setExpenses((prevExpenses) => {
+        const updatedExpenses = [...prevExpenses];
+        updatedExpenses[editIndex] = newExpense;
+        return updatedExpenses;
+      });
 
-    console.log(onAddExpense);
-    // Call the callback to add the new expense
-    onAddExpense(newExpense);
+      setEditIndex(null); // Reset editIndex after editing
+    } else {
+      // If editIndex is null, add a new expense
+      setExpenses((prevExpenses) => [...prevExpenses, newExpense]);
+    }
 
     // Add your logic here if needed
 
@@ -80,8 +69,7 @@ const AddExpense = ({ onAddExpense, editExpense }) => {
     // For simplicity, this example assumes a successful addition
     // In a real application, you would handle errors and server communication
 
-    setErrors({}); // Clear any previous errors
-    navigate("/dashboard");
+    setErrors({});
   };
 
   const validateForm = () => {
@@ -104,10 +92,30 @@ const AddExpense = ({ onAddExpense, editExpense }) => {
     const regex = /^\d{4}-\d{2}-\d{2}$/;
     return dateString.match(regex) !== null;
   };
+  const handleEditExpense = (index) => {
+    setEditIndex(index);
+  };
+
+  const handleDeleteExpense = (index) => {
+    setExpenses((prevExpenses) => prevExpenses.filter((_, i) => i !== index));
+  };
+
+  useEffect(() => {
+    const storedExpenses = localStorage.getItem("expenses");
+    console.log("Stored Expenses:", storedExpenses);
+    if (storedExpenses) {
+      setExpenses(JSON.parse(storedExpenses));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("expenses", JSON.stringify(expenses));
+    console.log("Expenses saved to localStorage:", expenses);
+  }, [expenses]);
 
   return (
     <div>
-      <h2>{editExpense ? "Edit Expense" : "Add Expense"}</h2>
+      <h2>Add Expense</h2>
       <form onSubmit={handleSubmit}>
         <div>
           <label>Expense Name:</label>
@@ -149,10 +157,30 @@ const AddExpense = ({ onAddExpense, editExpense }) => {
             onChange={handleInputChange}
           />
         </div>
-        <button onClick={handleAdd} onClickCapture={notify}>
-          {editExpense ? "Update Expense" : "Add Expense"}
+        <button type="submit" onClickCapture={notify}>
+          Add Expense
         </button>
       </form>
+      <div className="expense-grid">
+        {/* Display added expenses */}
+        {expenses.length > 0 &&
+          expenses.map((expense, index) => (
+            <div key={index} className="expense-box">
+              {/* Display expense details, edit, and delete options */}
+              <p>Expense Name: {expense?.expenseName}</p>
+              <p>Amount: {expense?.amount}</p>
+              <p>Date: {expense?.date}</p>
+              <p>Category: {expense?.category}</p>
+              <button onClick={() => handleEditExpense(index)}>Edit</button>
+              <button
+                onClick={() => handleDeleteExpense(index)}
+                onClickCapture={notifyDelete}
+              >
+                Delete
+              </button>
+            </div>
+          ))}
+      </div>
     </div>
   );
 };

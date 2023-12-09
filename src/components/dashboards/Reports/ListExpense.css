@@ -1,0 +1,18 @@
+.listtable {
+  border: 2px solid black;
+  font-size: medium;
+  height: 30px;
+  padding: 3px;
+}
+.listtablehead {
+  border: 2px solid black;
+  font-size: medium;
+  height: 30px;
+  padding: 3px;
+}
+.listtabledis {
+  border: 2px solid black;
+  font-size: medium;
+  height: 30px;
+  padding: 3px;
+}

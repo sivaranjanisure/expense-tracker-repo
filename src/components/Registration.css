@@ -8,10 +8,6 @@
   position: relative;
 }
 
-#password {
-  padding-right: 30px; /* Add space for the show/hide button */
-}
-
 .toggle-password {
   position: absolute;
   top: 50%;

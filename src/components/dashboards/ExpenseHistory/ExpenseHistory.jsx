@@ -34,7 +34,7 @@ const ExpenseHistory = () => {
         id: 3,
         expenseName: "Movie at KG cinema",
         amount: 2000,
-        date: "2023-12-01",
+        date: "2023-12-05",
         category: "Entertainment",
       },
       {
@@ -95,41 +95,36 @@ const ExpenseHistory = () => {
 
     // Implement logic to filter expenses based on filterType and filterValue
     if (filterType === "dateRange") {
-      // Example: Filter by date range
       filteredExpenses = filteredExpenses.filter(
         (expense) =>
           new Date(expense.date) >= new Date(filterValue.startDate) &&
           new Date(expense.date) <= new Date(filterValue.endDate)
       );
     } else if (filterType === "category") {
-      // Example: Filter by category
       filteredExpenses = filteredExpenses.filter(
         (expense) =>
           expense.category.toLowerCase() === filterValue.toLowerCase()
       );
-    } else if (filterType === "searchTerm") {
-      // Example: Filter by search term in expenseName
+    } else if (filterType === "amount") {
+      filteredExpenses = filteredExpenses.filter(
+        (expense) => expense.amount === +filterValue
+      );
+    } else if (filterType === "expenseName") {
       filteredExpenses = filteredExpenses.filter((expense) =>
         expense.expenseName.toLowerCase().includes(filterValue.toLowerCase())
       );
     }
 
-    // Update filteredExpenses state accordingly
     setFilteredExpenses(filteredExpenses);
 
-    // Reset current page to 1 after applying a filter
     setCurrentPage(1);
   };
 
-  // Handle editing an expense
   const handleEditExpense = (index) => {
     setEditIndex(index);
   };
 
-  // Handle saving edited expense
   const handleSaveEdit = (editedExpense) => {
-    // Implement logic to save edited expense
-    // Update expenses and filteredExpenses state accordingly
     const updatedExpenses = [...expenses];
     updatedExpenses[editIndex] = editedExpense;
     setExpenses(updatedExpenses);

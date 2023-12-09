@@ -1,6 +1,17 @@
-table,
-td,
-th {
+.table {
+  border: 2px solid black;
+  font-size: medium;
+  height: 70px;
+  padding: 3px;
+}
+.tablehead {
+  border: 2px solid black;
+  font-size: medium;
+  height: 70px;
+  padding: 3px;
+}
+
+.tabledis {
   border: 2px solid black;
   font-size: medium;
   height: 70px;
@@ -12,12 +23,12 @@ table {
   width: 100%;
 }
 
-td {
+.tabledis {
   text-align: center;
   background-color: burlywood;
   color: black;
 }
-th {
+.tablehead {
   background-color: cornflowerblue;
   color: black;
 }

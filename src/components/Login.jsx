@@ -45,27 +45,15 @@ const Login = () => {
       // Successful login, you can redirect the user or perform other actions
       console.log("Login successful!");
       //navigate to dashboard
-      navigate("/dashboard");
+      navigate("/user");
     } else {
       setError("Invalid credentials. Please try again.");
     }
   };
-  // Handle reset button click
-  const handleReset = () => {
-    // Reset the email and password fields
-    setFormData({
-      email: "",
-      password: "",
-    });
-
-    // Clear error and success messages
-    setError("");
-    setSuccessMessage("");
-  };
 
   return (
-    <div>
-      <h2>Login</h2>
+    <div className="container">
+      <h1>Login</h1>
       <form id="loginForm" onSubmit={handleSubmit}>
         <div>
           <label>Email:</label>
@@ -94,10 +82,8 @@ const Login = () => {
             </span>{" "}
           </div>
         </div>
-        <button className="resetbutton" type="button" onClick={handleReset}>
-          reset
-        </button>
-        <button type="submit" onClick={notify}>
+
+        <button className="logBtn" type="submit" onClick={notify}>
           Login
         </button>
 
