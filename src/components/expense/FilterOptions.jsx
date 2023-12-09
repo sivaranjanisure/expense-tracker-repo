@@ -6,14 +6,11 @@ const FilterOptions = ({ onFilterChange }) => {
   const [filterValue, setFilterValue] = useState("");
 
   const handleFilter = () => {
-    // Implement validation if needed
     onFilterChange(filterType, filterValue);
   };
 
   return (
     <div>
-      {/* Implement filtering UI */}
-      {/* Example: */}
       <select onChange={(e) => setFilterType(e.target.value)}>
         <option value="">Select Filter</option>
         <option value="expenseName">Expense Name</option>

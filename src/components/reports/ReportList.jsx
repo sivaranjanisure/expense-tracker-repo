@@ -2,7 +2,7 @@ import React from "react";
 import "./ReportList.css";
 import { useNavigate } from "react-router-dom";
 
-const ReportList = () => {
+const ReportList = ({ download }) => {
   const navigate = useNavigate();
   const goBack = () => {
     navigate("/reportspage");
@@ -59,7 +59,6 @@ const ReportList = () => {
         </table>
       </div>
       <div>
-        <button>Print</button>
         <button onClick={() => goBack()}>Back</button>
       </div>
     </div>

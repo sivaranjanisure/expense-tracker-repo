@@ -1,52 +1,49 @@
-/* Dashboard.css */
-
-/* Main content styling */
 .dashboard-content {
-  margin-left: 220px; /* Adjust the margin to make space for the sidebar */
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
-/* Button styling */
 .b1 {
   margin-bottom: 10px;
 }
 
-/* Graphical representation container styling */
 .graph-container {
   margin-top: 20px;
 }
 
-/* Expense grid styling */
 .expense-grid {
   display: flex;
   flex-wrap: wrap;
 }
 
-/* Expense box styling */
-.expense-box {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin: 10px;
-}
-
-/* Add any additional styles as needed */
 .expense-grid {
   display: grid;
   justify-items: stretch;
   grid-template-columns: 1fr 1fr 1fr;
-  background-color: rgb(243, 239, 230);
   margin: 15px;
+  gap: 20px;
 }
 
 .expense-box {
-  width: 80%;
-  height: 200px;
+  width: 90%;
+  height: 230px;
   padding: 10px;
-  border: 3px solid rgb(191, 27, 131);
+  border: 3px solid rgb(63, 171, 88);
   margin: 5px;
   border-radius: 10px;
-  background-color: rgb(226, 202, 216);
+  background-color: rgb(243, 239, 230);
 }
+
+.add-expense {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 button {
   background-color: rgb(13, 192, 99);
   color: rgb(246, 241, 241);
@@ -56,10 +53,15 @@ button {
   cursor: pointer;
   font-size: 16px;
   margin: 15px 5px;
+  min-width: 100px;
   max-width: fit-content;
 }
 .b1 {
   display: flex;
   flex-direction: row;
   justify-items: stretch;
+}
+.modal-foot {
+  display: flex;
+  justify-content: space-around;
 }

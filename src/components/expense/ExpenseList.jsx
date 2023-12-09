@@ -13,8 +13,7 @@ const ExpenseList = ({
     indexOfFirstExpense,
     indexOfLastExpense
   );
-  console.log("currentExpenses", currentExpenses);
-  // Default expenses data (you can modify this with your actual data)
+
   const defaultExpenses = [
     {
       id: 1,
@@ -23,18 +22,14 @@ const ExpenseList = ({
       date: "2023-12-01",
       category: "Food",
     },
-
-    // Add more default expenses as needed
   ];
-  console.log("Received expenses", expenses);
-  // If the currentExpenses array is empty, use defaultExpenses
+
   const displayExpenses = currentExpenses.length
     ? currentExpenses
     : defaultExpenses;
 
   return (
     <table>
-      {/* Implement table headers */}
       <thead>
         <tr>
           <th>Expense Name</th>
@@ -47,13 +42,11 @@ const ExpenseList = ({
       <tbody>
         {displayExpenses.map((expense) => (
           <tr key={expense.id}>
-            {/* Implement table rows */}
             <td>{expense.expenseName}</td>
             <td>{expense.amount}</td>
             <td>{expense.date}</td>
             <td>{expense.category}</td>
             <td>
-              {/* Implement Edit and Delete buttons */}
               <button onClick={() => onEditExpense(expense.id)}>Edit</button>
               <button onClick={() => onDeleteExpense(expense.id)}>
                 Delete

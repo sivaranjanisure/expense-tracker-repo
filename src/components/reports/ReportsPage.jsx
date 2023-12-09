@@ -1,20 +1,17 @@
 import React, { useState } from "react";
-
-import BarChart from "./BarChart"; // Import the BarChart component
+import { useRef } from "react";
+import generatePDF from "react-to-pdf";
+import BarChart from "./BarChart";
 import ListExpense from "./ListExpense";
 import ReportList from "./ReportList";
 
-const ReportsPage = ({ expenses }) => {
-  const [selectedMonth, setSelectedMonth] = useState(""); // State to track the selected month
+const ReportsPage = () => {
+  const targetRef = useRef();
+  const [selectedMonth, setSelectedMonth] = useState("");
   const [showReportList, setShowReportList] = useState(false);
 
   const generateMonthlyReport = () => {
-    console.log(selectedMonth, "selectedMonth");
     if (selectedMonth?.includes("12")) {
-      const expensesInSelectedMonth = expenses?.filter(
-        (expense) => expense.date.slice(0, 7) === selectedMonth
-      );
-      console.log("Monthly Report:", expensesInSelectedMonth);
       setShowReportList(true);
     }
   };
@@ -30,9 +27,14 @@ const ReportsPage = ({ expenses }) => {
       />
 
       <button onClick={generateMonthlyReport}> Generate Report </button>
-      {showReportList && <ReportList />}
-      <BarChart />
-      <ListExpense />
+      <div className="reports" ref={targetRef}>
+        {showReportList && <ReportList />}
+        <BarChart />
+        <ListExpense />
+      </div>
+      <button onClick={() => generatePDF(targetRef, { filename: "page.pdf" })}>
+        Download PDF
+      </button>
     </div>
   );
 };

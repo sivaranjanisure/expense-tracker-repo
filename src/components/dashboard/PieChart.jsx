@@ -4,10 +4,12 @@ import { Pie } from "react-chartjs-2";
 
 const PieChart = ({ data }) => {
   return (
-    <div>
-      <h2>Pie Chart</h2>
-      <Pie data={data} />
-    </div>
+    <>
+      <h2>Graphical representation</h2>
+      <div style={{ width: "380px" }}>
+        <Pie data={data} />
+      </div>
+    </>
   );
 };
 

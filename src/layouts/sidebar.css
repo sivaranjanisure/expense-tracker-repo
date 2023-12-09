@@ -4,16 +4,15 @@
 
 .sidebar {
   height: 100vh;
-  width: 200px;
+  width: 230px;
   position: fixed;
   top: 0;
   left: 0;
-  background-color: #90938a;
+  background-color: #bfcfc5;
   color: #000000;
   display: flex;
   flex-direction: column;
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .barItem {
@@ -27,12 +26,13 @@
   margin: 20px 0px;
   cursor: pointer;
   font-size: 20px;
-  color: rgb(48, 134, 29);
+  color: rgb(13, 192, 99);
+  border: 1px solid rgb(13, 192, 99);
   padding: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .barItem:hover {
-  color: rgb(48, 134, 29);
+  color: rgb(13, 192, 99);
   box-shadow: #333;
 }

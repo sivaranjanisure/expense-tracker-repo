@@ -1,16 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./components/Login";
-import Registration from "./components/Registration";
-import Dashboard from "./components/dashboards/Dashboard";
-import ResetPassword from "./components/ResetPassword";
-import ExpenseHistory from "./components/dashboards/ExpenseHistory/ExpenseHistory";
-import ReportsPage from "./components/dashboards/Reports/ReportsPage";
-import PieChart from "./components/dashboards/PieChart";
-import Expense from "./components/dashboards/Expense";
-import ReportList from "./components/dashboards/Reports/ReportList";
-import Sidebar from "./components/Sidebar";
-import AddExpense from "./components/dashboards/AddExpense";
+import Login from "./components/auth/Login";
+import Registration from "./components/auth/Registration";
+import ResetPassword from "./components/auth/ResetPassword";
+import Sidebar from "./layouts/Sidebar";
+import Dashboard from "./components/dashboard/Dashboard";
+import ExpenseHistory from "./components/expense/ExpenseHistory";
+import AddExpense from "./components/addexpense/AddExpense";
+import ReportsPage from "./components/reports/ReportsPage";
 
 const MainRoutes = () => {
   return (
@@ -21,13 +18,9 @@ const MainRoutes = () => {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/user" element={<Sidebar />}>
           <Route index element={<Dashboard />} />
-
           <Route path="expense-history" element={<ExpenseHistory />} />
           <Route path="reports-page" element={<ReportsPage />} />
-          <Route path="piechart" element={<PieChart />} />
-          <Route path="expense" element={<Expense />} />
           <Route path="add-expense" element={<AddExpense />} />
-          <Route path="reportlist" element={<ReportList />} />
         </Route>
       </Routes>
     </Router>

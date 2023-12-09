@@ -11,7 +11,6 @@ const ExpenseEditForm = ({ expense, onSaveEdit }) => {
 
   return (
     <div>
-      {/* Display the input fields with the saved values */}
       <input
         type="text"
         name="expenseName"
@@ -37,7 +36,6 @@ const ExpenseEditForm = ({ expense, onSaveEdit }) => {
         onChange={handleInputChange}
       />
 
-      {/* Save and Cancel buttons */}
       <button onClick={() => onSaveEdit(editedExpense)}>Save</button>
       <button onClick={() => onSaveEdit(expense)}>Cancel</button>
     </div>

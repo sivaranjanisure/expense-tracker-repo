@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate, useOutlet } from "react-router-dom";
 import "./sidebar.css";
 
-const Sidebar = ({ children }) => {
+const Sidebar = () => {
   const navigate = useNavigate();
   const outlet = useOutlet();
   const items = [
