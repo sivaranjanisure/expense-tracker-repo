@@ -5,7 +5,7 @@ function BarChart() {
     <div className="BarChart">
       <h1>Expenses Bar graph </h1>
       <h2> Each day in a month.</h2>
-      <div style={{ maxWidth: "650px" }}>
+      <div style={{ maxWidth: "650px", margin: "50px 30px" }}>
         <Bar
           data={{
             labels: ["2023-12-01", "2023-12-08", "2023-12-05", "2023-12-12"],
@@ -13,8 +13,8 @@ function BarChart() {
               {
                 label: "total count/value",
                 data: [1000, 7000, 2000, 0],
-                backgroundColor: ["aqua", "green", "red", "yellow"],
-                borderColor: ["aqua", "green", "red", "yellow"],
+                backgroundColor: ["rgb(13, 192, 99)", "pink", "grey"],
+                borderColor: ["rgb(13, 192, 99)", "pink", "grey"],
                 borderWidth: 0.5,
               },
             ],
