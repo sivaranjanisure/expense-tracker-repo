@@ -91,7 +91,7 @@ const Login = () => {
         {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
       </form>
       <p>
-        <Link to="/reset-password">Forgot Password?</Link>
+        <Link to="/forgotpassword">Forgot Password?</Link>
       </p>
 
       <p>

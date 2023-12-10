@@ -12,7 +12,9 @@ const Pagination = ({ expensesPerPage, totalExpenses, paginate }) => {
     <div className="pagination">
       {pageNumbers.map((number) => (
         <div key={number}>
-          <button onClick={() => paginate(number)}>{number}</button>
+          <button id="pagbut" onClick={() => paginate(number)}>
+            {number}
+          </button>
         </div>
       ))}
     </div>

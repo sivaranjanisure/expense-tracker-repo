@@ -11,16 +11,16 @@ const Sidebar = () => {
       link: "/user",
     },
     {
+      name: "Add Expense",
+      link: "/user/add-expense",
+    },
+    {
       name: "Expense History",
       link: "/user/expense-history",
     },
     {
       name: "Reports",
       link: "/user/reports-page",
-    },
-    {
-      name: "Add Expense",
-      link: "/user/add-expense",
     },
   ];
   return (

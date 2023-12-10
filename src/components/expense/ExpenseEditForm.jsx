@@ -1,7 +1,10 @@
 // ExpenseEditForm.jsx
 import React, { useState } from "react";
+import "./ExpenseEditForm.css";
+import { toast } from "react-toastify";
 
 const ExpenseEditForm = ({ expense, onSaveEdit }) => {
+  const notifyUpdate = () => toast("Expense updated successfully!");
   const [editedExpense, setEditedExpense] = useState(expense);
 
   const handleInputChange = (e) => {
@@ -11,6 +14,7 @@ const ExpenseEditForm = ({ expense, onSaveEdit }) => {
 
   return (
     <div>
+      <h3>Edit Expense</h3>
       <input
         type="text"
         name="expenseName"
@@ -36,8 +40,12 @@ const ExpenseEditForm = ({ expense, onSaveEdit }) => {
         onChange={handleInputChange}
       />
 
-      <button onClick={() => onSaveEdit(editedExpense)}>Save</button>
-      <button onClick={() => onSaveEdit(expense)}>Cancel</button>
+      <button className="editbu" onClick={() => onSaveEdit(editedExpense)}>
+        Save
+      </button>
+      <button className="editbu" onClick={() => onSaveEdit(expense)}>
+        Cancel
+      </button>
     </div>
   );
 };

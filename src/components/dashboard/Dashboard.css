@@ -31,7 +31,7 @@
   width: 90%;
   height: 230px;
   padding: 10px;
-  border: 3px solid rgb(63, 171, 88);
+  border: 3px solid rgb(53, 71, 150);
   margin: 5px;
   border-radius: 10px;
   background-color: rgb(243, 239, 230);
@@ -45,7 +45,7 @@
 }
 
 button {
-  background-color: rgb(13, 192, 99);
+  background-color: rgb(53, 71, 150);
   color: rgb(246, 241, 241);
   padding: 10px;
   border: none;

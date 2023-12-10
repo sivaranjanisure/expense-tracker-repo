@@ -3,13 +3,29 @@ import ExpenseList from "./ExpenseList";
 import FilterOptions from "./FilterOptions";
 import Pagination from "./Pagination";
 import ExpenseEditForm from "./ExpenseEditForm";
+import Modal from "../addexpense/Modal";
+import { toast } from "react-toastify";
+import "./ExpenseHistory.css";
 
 const ExpenseHistory = () => {
   const [expenses, setExpenses] = useState([]);
   const [filteredExpenses, setFilteredExpenses] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [editIndex, setEditIndex] = useState(null);
+  const notifyUpdate = () => toast("Expense updated successfully!");
+  const notifyDelete = () => toast("Expense deleted successfully!");
   const expensesPerPage = 5;
+
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   const exampleExpenses = [
     {
       id: 1,
@@ -111,6 +127,7 @@ const ExpenseHistory = () => {
 
   const handleEditExpense = (index) => {
     setEditIndex(index);
+    openModal();
   };
 
   const handleSaveEdit = (editedExpense) => {
@@ -119,23 +136,28 @@ const ExpenseHistory = () => {
     setExpenses(updatedExpenses);
     setFilteredExpenses(updatedExpenses);
     setEditIndex(null);
+    closeModal();
+    notifyUpdate();
   };
 
   const handleDeleteExpense = (id) => {
     const updatedExpenses = expenses.filter((expense) => expense.id !== id);
     setExpenses(updatedExpenses);
     setFilteredExpenses(updatedExpenses);
+    notifyDelete();
   };
 
   return (
-    <div>
+    <div className="expensehistory">
       <h2>Expense History</h2>
       <FilterOptions onFilterChange={handleFilter} />
       {editIndex !== null ? (
-        <ExpenseEditForm
-          expense={expenses[editIndex]}
-          onSaveEdit={handleSaveEdit}
-        />
+        <Modal isOpen={isModalOpen}>
+          <ExpenseEditForm
+            expense={expenses[editIndex]}
+            onSaveEdit={handleSaveEdit}
+          />
+        </Modal>
       ) : (
         <>
           <ExpenseList

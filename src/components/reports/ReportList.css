@@ -25,11 +25,11 @@ table {
 
 .tabledis {
   text-align: center;
-  background-color: burlywood;
+  background-color: rgb(241, 209, 168);
   color: black;
 }
 .tablehead {
-  background-color: cornflowerblue;
+  background-color: rgb(209, 217, 232);
   color: black;
 }
 .foot {

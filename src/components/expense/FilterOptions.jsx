@@ -1,5 +1,6 @@
 // FilterOptions.jsx
 import React, { useState } from "react";
+import "./FilterOptions.css";
 
 const FilterOptions = ({ onFilterChange }) => {
   const [filterType, setFilterType] = useState("");
@@ -19,7 +20,9 @@ const FilterOptions = ({ onFilterChange }) => {
         <option value="amount">Amount</option>
       </select>
       <input type="text" onChange={(e) => setFilterValue(e.target.value)} />
-      <button onClick={handleFilter}>Apply Filter</button>
+      <button id="filbut" onClick={handleFilter}>
+        Apply Filter
+      </button>
     </div>
   );
 };

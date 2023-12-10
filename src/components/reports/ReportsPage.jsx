@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./Reportspage.css";
 import { useRef } from "react";
 import generatePDF from "react-to-pdf";
 import BarChart from "./BarChart";
@@ -26,13 +27,19 @@ const ReportsPage = () => {
         onChange={(e) => setSelectedMonth(e.target.value)}
       />
 
-      <button onClick={generateMonthlyReport}> Generate Report </button>
+      <button className="repobut" onClick={generateMonthlyReport}>
+        {" "}
+        Generate Report{" "}
+      </button>
       <div className="reports" ref={targetRef}>
         {showReportList && <ReportList />}
         <BarChart />
         <ListExpense />
       </div>
-      <button onClick={() => generatePDF(targetRef, { filename: "page.pdf" })}>
+      <button
+        className="repobut"
+        onClick={() => generatePDF(targetRef, { filename: "page.pdf" })}
+      >
         Download PDF
       </button>
     </div>

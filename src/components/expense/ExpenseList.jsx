@@ -1,4 +1,5 @@
 import React from "react";
+import "./ExpenseList.css";
 
 const ExpenseList = ({
   expenses,
@@ -29,7 +30,7 @@ const ExpenseList = ({
     : defaultExpenses;
 
   return (
-    <table>
+    <table className="listhis">
       <thead>
         <tr>
           <th>Expense Name</th>
@@ -47,8 +48,16 @@ const ExpenseList = ({
             <td>{expense.date}</td>
             <td>{expense.category}</td>
             <td>
-              <button onClick={() => onEditExpense(expense.id)}>Edit</button>
-              <button onClick={() => onDeleteExpense(expense.id)}>
+              <button
+                className="ebutton"
+                onClick={() => onEditExpense(expense.id)}
+              >
+                Edit
+              </button>
+              <button
+                className="ebutton"
+                onClick={() => onDeleteExpense(expense.id)}
+              >
                 Delete
               </button>
             </td>

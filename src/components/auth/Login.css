@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 25%;
+  margin-top: 15%;
   width: 450px;
   background-color: #f5f5f5;
 }
@@ -40,19 +40,19 @@ input {
 }
 
 .logBtn {
-  background-color: rgb(13, 192, 99);
+  background-color: rgb(53, 71, 150);
   color: rgb(246, 241, 241);
   padding: 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
-  margin: 15px 5px 15px 80px;
+  margin: 15px 5px 15px 40px;
   max-width: fit-content;
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color: #7c92da;
 }
 
 .error-message {

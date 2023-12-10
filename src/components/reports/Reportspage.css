@@ -1,0 +1,8 @@
+.repobut {
+  background-color: rgb(53, 71, 150);
+  color: rgb(246, 241, 241);
+}
+
+.repobut:hover {
+  background-color: #7c92da;
+}

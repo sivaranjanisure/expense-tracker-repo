@@ -15,3 +15,19 @@
   transform: translateY(-50%);
   cursor: pointer;
 }
+.regisBtn {
+  background-color: rgb(53, 71, 150);
+  color: rgb(246, 241, 241);
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 15px 5px 15px 50px;
+  max-width: fit-content;
+  align-items: center;
+}
+
+.regisBtn:hover {
+  background-color: #7c92da;
+}

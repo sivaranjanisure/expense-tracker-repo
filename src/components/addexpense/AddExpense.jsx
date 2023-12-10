@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import Modal from "./Modal";
+import "./AddExpense.css";
 
 const AddExpense = () => {
   const notify = () => toast("Expense added successfully!");
@@ -104,7 +105,9 @@ const AddExpense = () => {
   return (
     <div className="add-expense">
       <h2>Add Expense here...</h2>
-      <button onClick={openModal}>Add Expense</button>
+      <button className="addbut" onClick={openModal}>
+        Add Expense
+      </button>
       <Modal isOpen={isModalOpen}>
         <div>
           <h2>{editIndex ? "Edit Expense" : "Add Expense"}</h2>
@@ -150,8 +153,12 @@ const AddExpense = () => {
               />
             </div>
             <div className="modal-foot">
-              <button type="submit">Save</button>
-              <button onClick={closeModal}>Cancel</button>
+              <button className="addbut" type="submit">
+                Save
+              </button>
+              <button className="addbut" onClick={closeModal}>
+                Cancel
+              </button>
             </div>
           </form>
         </div>
@@ -164,8 +171,18 @@ const AddExpense = () => {
               <p>Amount: {expense?.amount}</p>
               <p>Date: {expense?.date}</p>
               <p>Category: {expense?.category}</p>
-              <button onClick={() => handleEditExpense(index)}>Edit</button>
-              <button onClick={() => handleDeleteExpense(index)}>Delete</button>
+              <button
+                className="addbut"
+                onClick={() => handleEditExpense(index)}
+              >
+                Edit
+              </button>
+              <button
+                className="addbut"
+                onClick={() => handleDeleteExpense(index)}
+              >
+                Delete
+              </button>
             </div>
           ))}
       </div>

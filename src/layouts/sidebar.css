@@ -26,13 +26,13 @@
   margin: 20px 0px;
   cursor: pointer;
   font-size: 20px;
-  color: rgb(13, 192, 99);
-  border: 1px solid rgb(13, 192, 99);
+  color: rgb(53, 71, 150);
+  border: 1px solid rgb(53, 71, 150);
   padding: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .barItem:hover {
-  color: rgb(13, 192, 99);
+  color: rgb(53, 71, 150);
   box-shadow: #333;
 }
