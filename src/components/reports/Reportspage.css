@@ -6,3 +6,10 @@
 .repobut:hover {
   background-color: #7c92da;
 }
+.report-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}

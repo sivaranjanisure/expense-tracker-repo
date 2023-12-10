@@ -6,6 +6,11 @@
   text-align: center;
 }
 
+h1 {
+  color: rgb(53, 71, 150);
+  text-decoration: underline;
+}
+
 .b1 {
   margin-bottom: 10px;
 }

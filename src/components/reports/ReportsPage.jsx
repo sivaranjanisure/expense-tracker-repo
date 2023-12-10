@@ -18,7 +18,7 @@ const ReportsPage = () => {
   };
 
   return (
-    <div>
+    <div className="report-wrap">
       <h1>Reports</h1>
       <label>Select Month: </label>
       <input

@@ -1,7 +1,33 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./ReportList.css";
 
-const ReportList = ({ download }) => {
+const ReportList = () => {
+  const [expense, setExpense] = useState([]);
+  const [total, setTotal] = useState(0);
+  const getAllExpense = async () => {
+    await axios
+      .get("http://localhost:3000/expense/all-expenses")
+      .then((response) => {
+        if (response.status == 200) {
+          setTotal(
+            response.data?.reduce(
+              (accumulator, data) => accumulator + data.amount,
+              0
+            )
+          );
+          return setExpense(response.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    getAllExpense();
+  }, []);
+
   return (
     <div className="App">
       <div>
@@ -22,32 +48,21 @@ const ReportList = ({ download }) => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="tabledis">1</td>
-              <td className="tabledis"> 2023-12-01</td>
-              <td className="tabledis">Lunch at McDonald's</td>
-              <td className="tabledis"> Food</td>
-              <td className="tabledis">1000</td>
-            </tr>
-            <tr>
-              <td className="tabledis">2</td>
-              <td className="tabledis"> 2023-12-08</td>
-              <td className="tabledis">Trip to Goa</td>
-              <td className="tabledis"> Travel</td>
-              <td className="tabledis"> 7000</td>
-            </tr>
-            <tr>
-              <td className="tabledis">3</td>
-              <td className="tabledis"> 2023-12-05 </td>
-              <td className="tabledis">Movie at KG cinema</td>
-              <td className="tabledis"> Entertainment </td>
-              <td className="tabledis"> 2000</td>
-            </tr>
+            {expense &&
+              expense?.map((d, index) => (
+                <tr>
+                  <td className="tabledis">{index + 1}</td>
+                  <td className="tabledis"> {d.date}</td>
+                  <td className="tabledis">{d.expenseName}</td>
+                  <td className="tabledis">{d.category}</td>
+                  <td className="tabledis">{d.amount}</td>
+                </tr>
+              ))}
           </tbody>
           <tfoot>
             <tr className="foot">
               <td className="tabledis" colSpan={5}>
-                Total expense = 10000
+                Total expense = {total}
               </td>
             </tr>
           </tfoot>

@@ -12,7 +12,9 @@
 
 .modal {
   background: white;
-  padding: 30px 70px;
+  padding-top: 30px;
+  padding-left: 70px;
+  padding-right: 70px;
   border-radius: 8px;
   max-width: 500px;
   width: 100%;

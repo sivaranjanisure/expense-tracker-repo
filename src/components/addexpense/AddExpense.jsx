@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import axios from "axios";
 import Modal from "./Modal";
 import "./AddExpense.css";
 
@@ -42,28 +43,61 @@ const AddExpense = () => {
     });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const newExpense = {
-      expenseName: expenseData?.expenseName,
-      amount: expenseData?.amount,
-      date: expenseData?.date,
-      category: expenseData?.category,
-    };
-    if (editIndex !== null) {
-      setExpenses((prevExpenses) => {
-        const updatedExpenses = [...prevExpenses];
-        updatedExpenses[editIndex] = newExpense;
-        return updatedExpenses;
+  const getAllExpense = async () => {
+    await axios
+      .get("http://localhost:3000/expense/all-expenses")
+      .then((response) => {
+        if (response.status == 200) {
+          setExpenses(response.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast(error.response.data.message);
       });
-      setEditIndex(null);
-      notifyUpdate();
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (editIndex !== null) {
+      await axios
+        .post("http://localhost:3000/expense/edit-expense", {
+          ...expenseData,
+          expenseId: editIndex,
+        })
+        .then((response) => {
+          console.log("id...", response);
+          if (response.status == 200) {
+            setExpenseData({
+              expenseName: response.data.expenseName,
+              amount: response.data.amount,
+              date: response.data.date,
+              category: response.data.category,
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          toast(error.response.data.message);
+        });
     } else {
-      setExpenses([...expenses, newExpense]);
-      notify();
+      await axios
+        .post("http://localhost:3000/expense/add-expense", {
+          ...expenseData,
+        })
+        .then((response) => {
+          if (response.status == 200) {
+            toast(response.data.message);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          toast(error.response.data.message);
+        });
     }
+
     closeModal();
+    getAllExpense();
     setExpenseData({
       expenseName: "",
       amount: "",
@@ -72,29 +106,46 @@ const AddExpense = () => {
     });
   };
 
-  const handleEditExpense = (index) => {
+  const handleEditExpense = async (Id) => {
+    setEditIndex(Id);
     openModal();
-    setEditIndex(index);
-    const editData = expenses[index];
-    setExpenseData({
-      expenseName: editData.expenseName,
-      amount: editData.amount,
-      date: editData.date,
-      category: editData.category,
-    });
+    await axios
+      .get(`http://localhost:3000/expense/get-expense?id=${Id}`)
+      .then((response) => {
+        console.log("id...", response);
+        if (response.status == 200) {
+          setExpenseData({
+            expenseName: response.data.expenseName,
+            amount: response.data.amount,
+            date: response.data.date,
+            category: response.data.category,
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast(error.response.data.message);
+      });
   };
 
-  const handleDeleteExpense = (index) => {
-    setExpenses((prevExpenses) => prevExpenses.filter((_, i) => i !== index));
-    notifyDelete();
+  const handleDeleteExpense = async (id) => {
+    await axios
+      .delete(`http://localhost:3000/expense/delete-expenses/?id=${id}`)
+      .then((response) => {
+        console.log("id...", response);
+        if (response.status == 200) {
+          notifyDelete();
+          getAllExpense();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast(error.response.data.message);
+      });
   };
 
   useEffect(() => {
-    const storedExpenses = localStorage.getItem("expenses");
-    console.log("Stored Expenses:", storedExpenses);
-    if (storedExpenses) {
-      setExpenses(JSON.parse(storedExpenses));
-    }
+    getAllExpense();
   }, []);
 
   useEffect(() => {
@@ -104,7 +155,7 @@ const AddExpense = () => {
 
   return (
     <div className="add-expense">
-      <h2>Add Expense here...</h2>
+      <h1>Add Expense here...</h1>
       <button className="addbut" onClick={openModal}>
         Add Expense
       </button>
@@ -144,13 +195,18 @@ const AddExpense = () => {
             </div>
             <div>
               <label>Category:</label>
-              <input
-                type="text"
+              <select
                 name="category"
+                className="category-select"
                 value={expenseData.category}
                 onChange={handleInputChange}
                 required
-              />
+              >
+                <option value="">select</option>
+                <option value="entertainment">Entertainment</option>
+                <option value="food">Food</option>
+                <option value="health">Health</option>
+              </select>
             </div>
             <div className="modal-foot">
               <button className="addbut" type="submit">
@@ -164,8 +220,8 @@ const AddExpense = () => {
         </div>
       </Modal>
       <div className="expense-grid">
-        {expenses.length > 0 &&
-          expenses.map((expense, index) => (
+        {expenses?.length > 0 &&
+          expenses?.map((expense, index) => (
             <div key={index} className="expense-box">
               <p>Expense Name: {expense?.expenseName}</p>
               <p>Amount: {expense?.amount}</p>
@@ -173,13 +229,13 @@ const AddExpense = () => {
               <p>Category: {expense?.category}</p>
               <button
                 className="addbut"
-                onClick={() => handleEditExpense(index)}
+                onClick={() => handleEditExpense(expense._id)}
               >
                 Edit
               </button>
               <button
                 className="addbut"
-                onClick={() => handleDeleteExpense(index)}
+                onClick={() => handleDeleteExpense(expense._id)}
               >
                 Delete
               </button>

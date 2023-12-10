@@ -1,7 +1,59 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./ListExpense.css";
 
 const ListExpense = () => {
+  const [expense, setExpense] = useState([]);
+  const [travelCount, setTravelCount] = useState(0);
+  const [foodCount, setFoodCount] = useState(0);
+  const [entertainCount, setEntertainCount] = useState(0);
+
+  const getAllExpense = async () => {
+    await axios
+      .get("http://localhost:3000/expense/all-expenses")
+      .then((response) => {
+        if (response.status == 200) {
+          console.log(response.data);
+          return setExpense(response.data);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const calculateAmount = () => {
+    if (expense?.length > 0) {
+      console.log(expense, "expense.....");
+      const travelData = expense?.filter((d) => d.category === "travel");
+      const foodData = expense?.filter((d) => d.category === "food");
+      const entertainData = expense?.filter(
+        (d) => d.category === "entertainment"
+      );
+      console.log(travelData, foodData, entertainData);
+      setTravelCount(
+        travelData?.reduce((accumulator, data) => accumulator + data.amount, 0)
+      );
+
+      setFoodCount(
+        foodData?.reduce((accumulator, data) => accumulator + data.amount, 0)
+      );
+
+      setEntertainCount(
+        entertainData?.reduce(
+          (accumulator, data) => accumulator + data.amount,
+          0
+        )
+      );
+    }
+  };
+
+  useEffect(() => {
+    calculateAmount();
+  }, [expense]);
+  useEffect(() => {
+    getAllExpense();
+  }, []);
   return (
     <div>
       <table className="listtable">
@@ -16,15 +68,15 @@ const ListExpense = () => {
         </thead>
         <tr>
           <td className="listtabledis">Food</td>
-          <td className="listtabledis">1000</td>
+          <td className="listtabledis">{foodCount}</td>
         </tr>
         <tr>
           <td className="listtabledis">Travel</td>
-          <td className="listtabledis">7000</td>
+          <td className="listtabledis">{travelCount}</td>
         </tr>
         <tr>
           <td className="listtabledis">Entertainment</td>
-          <td className="listtabledis">2000</td>
+          <td className="listtabledis">{entertainCount}</td>
         </tr>
       </table>
     </div>

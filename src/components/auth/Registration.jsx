@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
 import "./Registration.css";
 
 const Registration = () => {
@@ -25,27 +27,36 @@ const Registration = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Perform registration logic here
     const isValid = validateForm();
     if (isValid) {
-      // Registration successful, you can proceed with further actions (e.g., API call)
-      console.log("Registration successful!", formData);
-      navigate("/login");
+      await axios
+        .post("http://localhost:3000/user/signup", {
+          email: formData.email,
+          password: formData.password,
+          username: formData.username,
+        })
+        .then((response) => {
+          console.log("response", response);
+          if (response.status == 200) {
+            toast(response.data.message);
+            navigate("/");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          toast(error.response.data.message);
+        });
     }
   };
 
   const validateForm = () => {
-    // Basic email format validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
       setError("Invalid email format");
       return false;
     }
-
-    // Password strength validation
     const passwordRegex = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(.{8,})$/;
     if (!passwordRegex.test(formData.password)) {
       setError(
@@ -54,9 +65,6 @@ const Registration = () => {
       return false;
     }
 
-    // Additional validation logic (e.g., check email uniqueness) can be added here
-
-    // If all validations pass
     setError("");
     return true;
   };

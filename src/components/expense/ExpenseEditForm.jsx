@@ -1,49 +1,45 @@
 // ExpenseEditForm.jsx
 import React, { useState } from "react";
 import "./ExpenseEditForm.css";
-import { toast } from "react-toastify";
 
-const ExpenseEditForm = ({ expense, onSaveEdit }) => {
-  const notifyUpdate = () => toast("Expense updated successfully!");
-  const [editedExpense, setEditedExpense] = useState(expense);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setEditedExpense((prevExpense) => ({ ...prevExpense, [name]: value }));
-  };
-
+const ExpenseEditForm = ({
+  expense,
+  onSaveEdit,
+  handleInputChange,
+  closeModal,
+}) => {
   return (
     <div>
       <h3>Edit Expense</h3>
       <input
         type="text"
         name="expenseName"
-        value={editedExpense.expenseName}
+        value={expense.expenseName}
         onChange={handleInputChange}
       />
       <input
         type="number"
         name="amount"
-        value={editedExpense.amount}
+        value={expense.amount}
         onChange={handleInputChange}
       />
       <input
         type="date"
         name="date"
-        value={editedExpense.date}
+        value={expense.date}
         onChange={handleInputChange}
       />
       <input
         type="text"
         name="category"
-        value={editedExpense.category}
+        value={expense.category}
         onChange={handleInputChange}
       />
 
-      <button className="editbu" onClick={() => onSaveEdit(editedExpense)}>
+      <button className="editbu" onClick={() => onSaveEdit()}>
         Save
       </button>
-      <button className="editbu" onClick={() => onSaveEdit(expense)}>
+      <button className="editbu" onClick={() => closeModal()}>
         Cancel
       </button>
     </div>

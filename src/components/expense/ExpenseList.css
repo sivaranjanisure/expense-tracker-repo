@@ -1,6 +1,7 @@
 .listhis {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
+  margin-left: 30%;
 }
 
 .listhis td,
@@ -17,7 +18,7 @@
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: left;
-  background-color: #0a5b5b;
+  background-color: #8153f5;
   color: white;
 }
 .ebutton {

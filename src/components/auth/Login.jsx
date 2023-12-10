@@ -1,22 +1,17 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom"; // If using React Router for navigation
+import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const Login = () => {
-  const notify = () => toast("Login successfully!");
   const navigate = useNavigate();
-  // State to manage form input values
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  // State to manage error messages
   const [error, setError] = useState("");
-
-  // State to manage success message
-  const [successMessage, setSuccessMessage] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -24,7 +19,6 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
-  // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -33,22 +27,24 @@ const Login = () => {
     });
   };
 
-  // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Perform authentication logic here (e.g., check credentials)
-    // For simplicity, this example assumes invalid credentials result in an error message
-    if (
-      formData.email === "sivvaa331998@gmail.com" &&
-      formData.password === "Shaasvik@23"
-    ) {
-      // Successful login, you can redirect the user or perform other actions
-      console.log("Login successful!");
-      //navigate to dashboard
-      navigate("/user");
-    } else {
-      setError("Invalid credentials. Please try again.");
-    }
+    await axios
+      .post("http://localhost:3000/user/login", {
+        email: formData.email,
+        password: formData.password,
+      })
+      .then((response) => {
+        console.log("response", response);
+        if (response.status == 200) {
+          toast(response.data.message);
+          navigate("/user");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        toast(error.response.data.message);
+      });
   };
 
   return (
@@ -74,21 +70,22 @@ const Login = () => {
               value={formData.password}
               onChange={handleInputChange}
             />{" "}
-            <span
-              className="toggle-password"
-              onClick={togglePasswordVisibility}
-            >
-              {showPassword ? "Hide" : "Show"}
-            </span>{" "}
+            {formData.password && (
+              <span
+                className="toggle-password"
+                onClick={togglePasswordVisibility}
+              >
+                {showPassword ? "Hide" : "Show"}
+              </span>
+            )}{" "}
           </div>
         </div>
 
-        <button className="logBtn" type="submit" onClick={notify}>
+        <button className="logBtn" type="submit">
           Login
         </button>
 
         {error && <p style={{ color: "red" }}>{error}</p>}
-        {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
       </form>
       <p>
         <Link to="/forgotpassword">Forgot Password?</Link>

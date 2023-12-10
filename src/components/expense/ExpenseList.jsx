@@ -15,20 +15,6 @@ const ExpenseList = ({
     indexOfLastExpense
   );
 
-  const defaultExpenses = [
-    {
-      id: 1,
-      expenseName: "Lunch at McDonald's",
-      amount: 1000,
-      date: "2023-12-01",
-      category: "Food",
-    },
-  ];
-
-  const displayExpenses = currentExpenses.length
-    ? currentExpenses
-    : defaultExpenses;
-
   return (
     <table className="listhis">
       <thead>
@@ -41,7 +27,7 @@ const ExpenseList = ({
         </tr>
       </thead>
       <tbody>
-        {displayExpenses.map((expense) => (
+        {expenses?.map((expense) => (
           <tr key={expense.id}>
             <td>{expense.expenseName}</td>
             <td>{expense.amount}</td>
@@ -50,13 +36,13 @@ const ExpenseList = ({
             <td>
               <button
                 className="ebutton"
-                onClick={() => onEditExpense(expense.id)}
+                onClick={() => onEditExpense(expense._id)}
               >
                 Edit
               </button>
               <button
                 className="ebutton"
-                onClick={() => onDeleteExpense(expense.id)}
+                onClick={() => onDeleteExpense(expense._id)}
               >
                 Delete
               </button>
