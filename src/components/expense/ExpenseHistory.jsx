@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import "./ExpenseHistory.css";
 
 const ExpenseHistory = () => {
+  const token = localStorage.getItem("token");
   const [expenses, setExpenses] = useState([]);
   const [filteredExpenses, setFilteredExpenses] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,7 +51,11 @@ const ExpenseHistory = () => {
 
   const getAllExpense = async () => {
     await axios
-      .get("http://localhost:3000/expense/all-expenses")
+      .get("http://localhost:3000/expense/all-expenses", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         if (response.status == 200) {
           setExpenses(response.data);
@@ -98,8 +103,13 @@ const ExpenseHistory = () => {
   const handleEditExpense = async (Id) => {
     setEditIndex(Id);
     openModal();
+
     await axios
-      .get(`http://localhost:3000/expense/get-expense?id=${Id}`)
+      .get(`http://localhost:3000/expense/get-expense?id=${Id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         console.log("id...", response);
         if (response.status == 200) {
@@ -119,7 +129,11 @@ const ExpenseHistory = () => {
 
   const handleDeleteExpense = async (id) => {
     await axios
-      .delete(`http://localhost:3000/expense/delete-expenses/?id=${id}`)
+      .delete(`http://localhost:3000/expense/delete-expenses/?id=${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         console.log("id...", response);
         if (response.status == 200) {
@@ -136,10 +150,19 @@ const ExpenseHistory = () => {
   const handleSaveEdit = async () => {
     if (editIndex !== null) {
       await axios
-        .post("http://localhost:3000/expense/edit-expense", {
-          ...expenseData,
-          expenseId: editIndex,
-        })
+        .post(
+          "http://localhost:3000/expense/edit-expense",
+
+          {
+            ...expenseData,
+            expenseId: editIndex,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
         .then((response) => {
           console.log("id...", response);
           if (response.status == 200) {

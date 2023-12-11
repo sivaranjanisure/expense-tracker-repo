@@ -5,13 +5,18 @@ import PieChart from "./PieChart";
 import Expense from "./Expense";
 
 const Dashboard = () => {
+  const token = localStorage.getItem("token");
   const [expense, setExpense] = useState([]);
   const [sets, setSets] = useState([]);
   const [total, setTotal] = useState(0);
 
   const getAllExpense = async () => {
     await axios
-      .get("http://localhost:3000/expense/all-expenses")
+      .get("http://localhost:3000/expense/all-expenses", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         if (response.status == 200) {
           console.log(response.data);
@@ -26,13 +31,16 @@ const Dashboard = () => {
   const calculateAmount = () => {
     if (expense?.length > 0) {
       console.log(expense, "expense.....");
-      const travelData = expense?.filter((d) => d.category === "travel");
+      const transportationData = expense?.filter(
+        (d) => d.category === "transportation"
+      );
       const foodData = expense?.filter((d) => d.category === "food");
       const entertainData = expense?.filter(
         (d) => d.category === "entertainment"
       );
-      console.log(travelData, foodData, entertainData);
-      const travelCount = travelData?.reduce(
+      const healthData = expense?.filter((d) => d.category === "health");
+      console.log(transportationData, foodData, entertainData, healthData);
+      const transportationCount = transportationData?.reduce(
         (accumulator, data) => accumulator + data.amount,
         0
       );
@@ -46,15 +54,20 @@ const Dashboard = () => {
         (accumulator, data) => accumulator + data.amount,
         0
       );
+      const healthCount = healthData?.reduce(
+        (accumulator, data) => accumulator + data.amount,
+        0
+      );
 
-      setTotal(travelCount + foodCount + entertainCount);
-      setSets([travelCount, foodCount, entertainCount]);
+      setTotal(transportationCount + foodCount + entertainCount + healthCount);
+      setSets([transportationCount, foodCount, entertainCount, healthCount]);
     }
   };
 
   useEffect(() => {
     calculateAmount();
   }, [expense]);
+
   useEffect(() => {
     getAllExpense();
   }, []);
@@ -69,11 +82,16 @@ const Dashboard = () => {
         <div>
           <PieChart
             data={{
-              labels: ["food", "health", "Entertainment"],
+              labels: ["food", "health", "Entertainment", "Transportation"],
               datasets: [
                 {
                   data: sets,
-                  backgroundColor: ["rgb(13, 192, 99)", "pink", "grey"],
+                  backgroundColor: [
+                    "rgb(13, 192, 99)",
+                    "pink",
+                    "grey",
+                    "rgb(109, 233, 208)",
+                  ],
                 },
               ],
             }}

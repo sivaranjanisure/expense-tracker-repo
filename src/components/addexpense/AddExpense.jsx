@@ -5,6 +5,7 @@ import Modal from "./Modal";
 import "./AddExpense.css";
 
 const AddExpense = () => {
+  const token = localStorage.getItem("token");
   const notify = () => toast("Expense added successfully!");
   const notifyUpdate = () => toast("Expense updated successfully!");
   const notifyDelete = () => toast("Expense deleted successfully!");
@@ -45,9 +46,13 @@ const AddExpense = () => {
 
   const getAllExpense = async () => {
     await axios
-      .get("http://localhost:3000/expense/all-expenses")
+      .get("http://localhost:3000/expense/all-expenses", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
-        if (response.status == 200) {
+        if (response.status === 200) {
           setExpenses(response.data);
         }
       })
@@ -61,19 +66,28 @@ const AddExpense = () => {
     e.preventDefault();
     if (editIndex !== null) {
       await axios
-        .post("http://localhost:3000/expense/edit-expense", {
-          ...expenseData,
-          expenseId: editIndex,
-        })
+        .post(
+          "http://localhost:3000/expense/edit-expense",
+          {
+            ...expenseData,
+            expenseId: editIndex,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
         .then((response) => {
           console.log("id...", response);
-          if (response.status == 200) {
+          if (response.status === 200) {
             setExpenseData({
               expenseName: response.data.expenseName,
               amount: response.data.amount,
               date: response.data.date,
               category: response.data.category,
             });
+            notifyUpdate();
           }
         })
         .catch((error) => {
@@ -82,12 +96,20 @@ const AddExpense = () => {
         });
     } else {
       await axios
-        .post("http://localhost:3000/expense/add-expense", {
-          ...expenseData,
-        })
+        .post(
+          "http://localhost:3000/expense/add-expense",
+          {
+            ...expenseData,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
         .then((response) => {
           if (response.status == 200) {
-            toast(response.data.message);
+            notify();
           }
         })
         .catch((error) => {
@@ -110,7 +132,11 @@ const AddExpense = () => {
     setEditIndex(Id);
     openModal();
     await axios
-      .get(`http://localhost:3000/expense/get-expense?id=${Id}`)
+      .get(`http://localhost:3000/expense/get-expense?id=${Id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         console.log("id...", response);
         if (response.status == 200) {
@@ -130,7 +156,11 @@ const AddExpense = () => {
 
   const handleDeleteExpense = async (id) => {
     await axios
-      .delete(`http://localhost:3000/expense/delete-expenses/?id=${id}`)
+      .delete(`http://localhost:3000/expense/delete-expenses/?id=${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         console.log("id...", response);
         if (response.status == 200) {
@@ -206,6 +236,7 @@ const AddExpense = () => {
                 <option value="entertainment">Entertainment</option>
                 <option value="food">Food</option>
                 <option value="health">Health</option>
+                <option value="transportation">Transportation</option>
               </select>
             </div>
             <div className="modal-foot">

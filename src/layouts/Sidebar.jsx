@@ -43,6 +43,7 @@ const Sidebar = () => {
       <div
         style={{
           margin: "50px",
+          marginLeft: "15%",
         }}
       >
         {outlet}

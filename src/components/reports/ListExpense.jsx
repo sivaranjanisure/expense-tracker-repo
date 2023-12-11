@@ -3,14 +3,20 @@ import axios from "axios";
 import "./ListExpense.css";
 
 const ListExpense = () => {
+  const token = localStorage.getItem("token");
   const [expense, setExpense] = useState([]);
   const [travelCount, setTravelCount] = useState(0);
+  const [healthCount, setHealthCount] = useState(0);
   const [foodCount, setFoodCount] = useState(0);
   const [entertainCount, setEntertainCount] = useState(0);
 
   const getAllExpense = async () => {
     await axios
-      .get("http://localhost:3000/expense/all-expenses")
+      .get("http://localhost:3000/expense/all-expenses", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         if (response.status == 200) {
           console.log(response.data);
@@ -25,7 +31,10 @@ const ListExpense = () => {
   const calculateAmount = () => {
     if (expense?.length > 0) {
       console.log(expense, "expense.....");
-      const travelData = expense?.filter((d) => d.category === "travel");
+      const travelData = expense?.filter(
+        (d) => d.category === "transportation"
+      );
+      const healthData = expense?.filter((d) => d.category === "health");
       const foodData = expense?.filter((d) => d.category === "food");
       const entertainData = expense?.filter(
         (d) => d.category === "entertainment"
@@ -33,6 +42,9 @@ const ListExpense = () => {
       console.log(travelData, foodData, entertainData);
       setTravelCount(
         travelData?.reduce((accumulator, data) => accumulator + data.amount, 0)
+      );
+      setHealthCount(
+        healthData?.reduce((accumulator, data) => accumulator + data.amount, 0)
       );
 
       setFoodCount(
@@ -71,8 +83,12 @@ const ListExpense = () => {
           <td className="listtabledis">{foodCount}</td>
         </tr>
         <tr>
-          <td className="listtabledis">Travel</td>
+          <td className="listtabledis">Transportation</td>
           <td className="listtabledis">{travelCount}</td>
+        </tr>
+        <tr>
+          <td className="listtabledis">Health</td>
+          <td className="listtabledis">{healthCount}</td>
         </tr>
         <tr>
           <td className="listtabledis">Entertainment</td>

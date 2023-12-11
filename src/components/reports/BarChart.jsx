@@ -3,14 +3,20 @@ import axios from "axios";
 import { Bar } from "react-chartjs-2";
 
 function BarChart() {
+  const token = localStorage.getItem("token");
   const [expense, setExpense] = useState([]);
-  const [travelCount, setTravelCount] = useState(0);
+  const [transportationCount, setTransportationCount] = useState(0);
   const [foodCount, setFoodCount] = useState(0);
   const [entertainCount, setEntertainCount] = useState(0);
+  const [healthCount, setHealthCount] = useState(0);
 
   const getAllExpense = async () => {
     await axios
-      .get("http://localhost:3000/expense/all-expenses")
+      .get("http://localhost:3000/expense/all-expenses", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         if (response.status == 200) {
           console.log(response.data);
@@ -25,14 +31,21 @@ function BarChart() {
   const calculateAmount = () => {
     if (expense?.length > 0) {
       console.log(expense, "expense.....");
-      const travelData = expense?.filter((d) => d.category === "travel");
+      const transportationData = expense?.filter(
+        (d) => d.category === "transportation"
+      );
       const foodData = expense?.filter((d) => d.category === "food");
+
       const entertainData = expense?.filter(
         (d) => d.category === "entertainment"
       );
-      console.log(travelData, foodData, entertainData);
-      setTravelCount(
-        travelData?.reduce((accumulator, data) => accumulator + data.amount, 0)
+      const healthData = expense?.filter((d) => d.category === "health");
+      console.log(transportationData, foodData, entertainData);
+      setTransportationCount(
+        transportationData?.reduce(
+          (accumulator, data) => accumulator + data.amount,
+          0
+        )
       );
 
       setFoodCount(
@@ -44,6 +57,9 @@ function BarChart() {
           (accumulator, data) => accumulator + data.amount,
           0
         )
+      );
+      setHealthCount(
+        healthData?.reduce((accumulator, data) => accumulator + data.amount, 0)
       );
     }
   };
@@ -65,9 +81,24 @@ function BarChart() {
             datasets: [
               {
                 label: "total count/value",
-                data: [travelCount, foodCount, entertainCount],
-                backgroundColor: ["rgb(13, 192, 99)", "pink", "grey"],
-                borderColor: ["rgb(13, 192, 99)", "pink", "grey"],
+                data: [
+                  transportationCount,
+                  foodCount,
+                  entertainCount,
+                  healthCount,
+                ],
+                backgroundColor: [
+                  "rgb(109, 233, 208)",
+                  "pink",
+                  "grey",
+                  "rgb(13, 192, 99)",
+                ],
+                borderColor: [
+                  "rgb(109, 233, 208)",
+                  "pink",
+                  "grey",
+                  "rgb(13, 192, 99)",
+                ],
                 borderWidth: 0.5,
               },
             ],

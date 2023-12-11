@@ -3,11 +3,16 @@ import axios from "axios";
 import "./ReportList.css";
 
 const ReportList = () => {
+  const token = localStorage.getItem("token");
   const [expense, setExpense] = useState([]);
   const [total, setTotal] = useState(0);
   const getAllExpense = async () => {
     await axios
-      .get("http://localhost:3000/expense/all-expenses")
+      .get("http://localhost:3000/expense/all-expenses", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         if (response.status == 200) {
           setTotal(

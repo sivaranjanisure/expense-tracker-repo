@@ -38,6 +38,7 @@ const Login = () => {
         console.log("response", response);
         if (response.status == 200) {
           toast(response.data.message);
+          localStorage.setItem("token", response.data.token);
           navigate("/user");
         }
       })

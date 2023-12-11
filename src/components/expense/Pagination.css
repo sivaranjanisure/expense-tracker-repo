@@ -1,7 +1,6 @@
 .pagination {
   display: flex;
   color: white;
-  margin-left: 30%;
 }
 
 .pagbut {
@@ -9,7 +8,7 @@
   background-color: rgb(245, 246, 250);
   color: rgb(53, 71, 150);
   margin: 10px;
-  padding: 10px 10px 10px 10px;
+  padding: 10px;
 }
 
 .pagbut:hover {
