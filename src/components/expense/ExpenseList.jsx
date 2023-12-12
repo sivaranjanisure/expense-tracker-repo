@@ -27,7 +27,7 @@ const ExpenseList = ({
         </tr>
       </thead>
       <tbody>
-        {expenses?.map((expense) => (
+        {currentExpenses?.map((expense) => (
           <tr key={expense.id}>
             <td>{expense.expenseName}</td>
             <td>{expense.amount}</td>

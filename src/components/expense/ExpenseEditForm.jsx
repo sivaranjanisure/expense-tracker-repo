@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import "./ExpenseEditForm.css";
 
 const ExpenseEditForm = ({
-  expense,
-  onSaveEdit,
+  expenseData,
+  handleSaveEdit,
   handleInputChange,
   closeModal,
 }) => {
@@ -14,29 +14,29 @@ const ExpenseEditForm = ({
       <input
         type="text"
         name="expenseName"
-        value={expense.expenseName}
+        value={expenseData.expenseName}
         onChange={handleInputChange}
       />
       <input
         type="number"
         name="amount"
-        value={expense.amount}
+        value={expenseData.amount}
         onChange={handleInputChange}
       />
       <input
         type="date"
         name="date"
-        value={expense.date}
+        value={expenseData.date}
         onChange={handleInputChange}
       />
       <input
         type="text"
         name="category"
-        value={expense.category}
+        value={expenseData.category}
         onChange={handleInputChange}
       />
 
-      <button className="editbu" onClick={() => onSaveEdit()}>
+      <button className="editbu" onClick={() => handleSaveEdit()}>
         Save
       </button>
       <button className="editbu" onClick={() => closeModal()}>

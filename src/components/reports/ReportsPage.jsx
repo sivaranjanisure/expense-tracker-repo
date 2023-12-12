@@ -23,6 +23,7 @@ const ReportsPage = () => {
       <label>Select Month: </label>
       <input
         type="month"
+        style={{ width: "50%" }}
         value={selectedMonth}
         onChange={(e) => setSelectedMonth(e.target.value)}
       />

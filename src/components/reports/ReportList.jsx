@@ -6,6 +6,7 @@ const ReportList = () => {
   const token = localStorage.getItem("token");
   const [expense, setExpense] = useState([]);
   const [total, setTotal] = useState(0);
+
   const getAllExpense = async () => {
     await axios
       .get("http://localhost:3000/expense/all-expenses", {
@@ -15,13 +16,12 @@ const ReportList = () => {
       })
       .then((response) => {
         if (response.status == 200) {
-          setTotal(
-            response.data?.reduce(
-              (accumulator, data) => accumulator + data.amount,
-              0
-            )
+          setExpense(response.data);
+          let count = response.data?.reduce(
+            (accumulator, data) => accumulator + data.amount,
+            0
           );
-          return setExpense(response.data);
+          setTotal(count);
         }
       })
       .catch((error) => {
@@ -39,17 +39,15 @@ const ReportList = () => {
         <h1>Expense Reports</h1>
       </div>
       <div>
-        <table className="table">
+        <table className="listhis">
           <thead>
-            <th className="tablehead" colSpan={5}>
-              Dec-Expense
-            </th>
+            <th colSpan={5}>Dec-Expense</th>
             <tr>
-              <td className="tablehead">S.no</td>
-              <td className="tablehead">Date</td>
-              <td className="tablehead">Expense Name</td>
-              <td className="tablehead">Catagories</td>
-              <td className="tablehead">Amount</td>
+              <td>S.no</td>
+              <td>Date</td>
+              <td>Expense Name</td>
+              <td>Catagories</td>
+              <td>Amount</td>
             </tr>
           </thead>
           <tbody>

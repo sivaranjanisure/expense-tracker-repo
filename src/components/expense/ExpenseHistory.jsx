@@ -188,13 +188,13 @@ const ExpenseHistory = () => {
   return (
     <div className="expensehistory">
       <h1>Expense History</h1>
-      <FilterOptions onFilterChange={handleFilter} />
+      <FilterOptions handleFilter={handleFilter} />
       {editIndex !== null ? (
         <Modal isOpen={isModalOpen}>
           <ExpenseEditForm
-            expense={expenseData}
-            onSaveEdit={handleSaveEdit}
+            expenseData={expenseData}
             handleInputChange={handleInputChange}
+            handleSaveEdit={handleSaveEdit}
             closeModal={closeModal}
           />
         </Modal>
@@ -203,9 +203,9 @@ const ExpenseHistory = () => {
           <ExpenseList
             expenses={filteredExpenses}
             onDeleteExpense={handleDeleteExpense}
+            onEditExpense={handleEditExpense}
             currentPage={currentPage}
             expensesPerPage={expensesPerPage}
-            onEditExpense={handleEditExpense}
           />
           <Pagination
             expensesPerPage={expensesPerPage}

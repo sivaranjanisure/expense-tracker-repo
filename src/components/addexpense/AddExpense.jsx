@@ -62,72 +62,6 @@ const AddExpense = () => {
       });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (editIndex !== null) {
-      await axios
-        .post(
-          "http://localhost:3000/expense/edit-expense",
-          {
-            ...expenseData,
-            expenseId: editIndex,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        )
-        .then((response) => {
-          console.log("id...", response);
-          if (response.status === 200) {
-            setExpenseData({
-              expenseName: response.data.expenseName,
-              amount: response.data.amount,
-              date: response.data.date,
-              category: response.data.category,
-            });
-            notifyUpdate();
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          toast(error.response.data.message);
-        });
-    } else {
-      await axios
-        .post(
-          "http://localhost:3000/expense/add-expense",
-          {
-            ...expenseData,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        )
-        .then((response) => {
-          if (response.status == 200) {
-            notify();
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-          toast(error.response.data.message);
-        });
-    }
-
-    closeModal();
-    getAllExpense();
-    setExpenseData({
-      expenseName: "",
-      amount: "",
-      date: getCurrentDate(),
-      category: "",
-    });
-  };
-
   const handleEditExpense = async (Id) => {
     setEditIndex(Id);
     openModal();
@@ -174,14 +108,76 @@ const AddExpense = () => {
       });
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (editIndex !== null) {
+      await axios
+        .post(
+          "http://localhost:3000/expense/edit-expense",
+          {
+            ...expenseData,
+            expenseId: editIndex,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((response) => {
+          console.log("id...", response);
+          if (response.status === 200) {
+            getAllExpense();
+            notifyUpdate();
+            setExpenseData({
+              expenseName: "",
+              amount: "",
+              date: getCurrentDate(),
+              category: "",
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          toast(error.response.data.message);
+        });
+    } else {
+      await axios
+        .post(
+          "http://localhost:3000/expense/add-expense",
+          {
+            ...expenseData,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((response) => {
+          if (response.status == 200) {
+            notify();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          toast(error.response.data.message);
+        });
+    }
+
+    closeModal();
+    getAllExpense();
+    setExpenseData({
+      expenseName: "",
+      amount: "",
+      date: getCurrentDate(),
+      category: "",
+    });
+  };
+
   useEffect(() => {
     getAllExpense();
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem("expenses", JSON.stringify(expenses));
-    console.log("Expenses saved to localStorage:", expenses);
-  }, [expenses]);
 
   return (
     <div className="add-expense">

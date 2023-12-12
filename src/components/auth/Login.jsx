@@ -11,8 +11,6 @@ const Login = () => {
     password: "",
   });
 
-  const [error, setError] = useState("");
-
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -37,8 +35,8 @@ const Login = () => {
       .then((response) => {
         console.log("response", response);
         if (response.status == 200) {
-          toast(response.data.message);
           localStorage.setItem("token", response.data.token);
+          toast(response.data.message);
           navigate("/user");
         }
       })
@@ -85,8 +83,6 @@ const Login = () => {
         <button className="logBtn" type="submit">
           Login
         </button>
-
-        {error && <p style={{ color: "red" }}>{error}</p>}
       </form>
       <p>
         <Link to="/forgotpassword">Forgot Password?</Link>

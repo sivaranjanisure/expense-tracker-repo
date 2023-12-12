@@ -56,7 +56,7 @@ const ForgotPassword = () => {
 
   return (
     <div>
-      <h2>Forgot Password</h2>
+      <h2>Reset Password</h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="email">Email:</label>
         <input
@@ -83,7 +83,7 @@ const ForgotPassword = () => {
         <div className="password-input-wrapper">
           <label htmlFor="password">Confirm password:</label>
           <input
-            type={showPassword ? "text" : "password"}
+            type={showConfirmPassword ? "text" : "password"}
             id="password"
             name="confirmPassword"
             value={formData.confirmPassword}

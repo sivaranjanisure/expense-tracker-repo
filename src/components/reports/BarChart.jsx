@@ -5,101 +5,74 @@ import { Bar } from "react-chartjs-2";
 function BarChart() {
   const token = localStorage.getItem("token");
   const [expense, setExpense] = useState([]);
-  const [transportationCount, setTransportationCount] = useState(0);
-  const [foodCount, setFoodCount] = useState(0);
-  const [entertainCount, setEntertainCount] = useState(0);
-  const [healthCount, setHealthCount] = useState(0);
+  const [dailyExpenses, setDailyExpenses] = useState([]);
 
   const getAllExpense = async () => {
-    await axios
-      .get("http://localhost:3000/expense/all-expenses", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        if (response.status == 200) {
-          console.log(response.data);
-          return setExpense(response.data);
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/expense/all-expenses",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      );
+
+      if (response.status === 200) {
+        console.log(response.data);
+        setExpense(response.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const calculateAmount = () => {
+  const calculateDailyExpenses = () => {
     if (expense?.length > 0) {
-      console.log(expense, "expense.....");
-      const transportationData = expense?.filter(
-        (d) => d.category === "transportation"
-      );
-      const foodData = expense?.filter((d) => d.category === "food");
+      const dailyExpenseData = {};
 
-      const entertainData = expense?.filter(
-        (d) => d.category === "entertainment"
-      );
-      const healthData = expense?.filter((d) => d.category === "health");
-      console.log(transportationData, foodData, entertainData);
-      setTransportationCount(
-        transportationData?.reduce(
-          (accumulator, data) => accumulator + data.amount,
-          0
-        )
-      );
+      expense.forEach((d) => {
+        const date = d.date;
+        const amount = d.amount;
+        if (!dailyExpenseData[date]) {
+          dailyExpenseData[date] = 0;
+        }
 
-      setFoodCount(
-        foodData?.reduce((accumulator, data) => accumulator + data.amount, 0)
-      );
+        dailyExpenseData[date] += amount;
+      });
 
-      setEntertainCount(
-        entertainData?.reduce(
-          (accumulator, data) => accumulator + data.amount,
-          0
-        )
-      );
-      setHealthCount(
-        healthData?.reduce((accumulator, data) => accumulator + data.amount, 0)
+      setDailyExpenses(
+        Object.entries(dailyExpenseData).map(([date, amount]) => ({
+          date,
+          amount,
+        }))
       );
     }
   };
 
   useEffect(() => {
-    calculateAmount();
+    calculateDailyExpenses();
   }, [expense]);
+
   useEffect(() => {
     getAllExpense();
   }, []);
+
   return (
     <div className="BarChart">
-      <h1>Expenses Bar graph </h1>
-      <h2> Each day in a month.</h2>
+      <h1>Expenses Bar graph</h1>
+      <h2>Each day in a month.</h2>
       <div style={{ maxWidth: "650px", margin: "50px 30px" }}>
         <Bar
           data={{
-            labels: [...new Set(expense?.map((expense) => expense.date))],
+            labels: dailyExpenses.map((data) => data.date),
             datasets: [
               {
-                label: "total count/value",
-                data: [
-                  transportationCount,
-                  foodCount,
-                  entertainCount,
-                  healthCount,
-                ],
-                backgroundColor: [
-                  "rgb(109, 233, 208)",
-                  "pink",
-                  "grey",
-                  "rgb(13, 192, 99)",
-                ],
-                borderColor: [
-                  "rgb(109, 233, 208)",
-                  "pink",
-                  "grey",
-                  "rgb(13, 192, 99)",
-                ],
-                borderWidth: 0.5,
+                label: "Total Amount",
+                data: dailyExpenses.map((data) => data.amount),
+                backgroundColor: "rgba(75,192,192,0.2)",
+                borderColor: "rgba(75,192,192,1)",
+                borderWidth: 1,
               },
             ],
           }}
@@ -116,9 +89,7 @@ function BarChart() {
               ],
             },
             legend: {
-              labels: {
-                fontSize: 15,
-              },
+              display: false,
             },
           }}
         />

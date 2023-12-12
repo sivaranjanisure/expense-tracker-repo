@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, useOutlet } from "react-router-dom";
+import menuIcon from "../assets/menu-icon.png";
 import "./sidebar.css";
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const outlet = useOutlet();
+  const [showMenu, setShowMenu] = useState(true);
   const items = [
     {
       name: "Dashboard",
@@ -25,8 +27,20 @@ const Sidebar = () => {
   ];
   return (
     <div className="layout">
-      <div className="sidebar">
-        {items &&
+      <div
+        className="sidebar"
+        style={{
+          width: `${showMenu ? "230px" : "30px"}`,
+          height: `${showMenu ? "100%" : "30px"}`,
+        }}
+      >
+        <img
+          src={menuIcon}
+          alt="menu"
+          onClickCapture={() => setShowMenu(!showMenu)}
+        />
+        {showMenu &&
+          items &&
           items.map((i) => (
             <div
               className={`${

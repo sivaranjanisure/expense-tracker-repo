@@ -40,6 +40,7 @@ const Dashboard = () => {
       );
       const healthData = expense?.filter((d) => d.category === "health");
       console.log(transportationData, foodData, entertainData, healthData);
+
       const transportationCount = transportationData?.reduce(
         (accumulator, data) => accumulator + data.amount,
         0

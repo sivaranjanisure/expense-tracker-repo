@@ -1,15 +1,14 @@
-// FilterOptions.jsx
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import "./FilterOptions.css";
 
-const FilterOptions = ({ onFilterChange }) => {
+const FilterOptions = ({ handleFilter }) => {
   const [filterType, setFilterType] = useState("");
   const [filterValue, setFilterValue] = useState("");
 
-  const handleFilter = () => {
+  const handleApply = () => {
     if (filterType && filterValue) {
-      onFilterChange(filterType, filterValue);
+      handleFilter(filterType, filterValue);
     } else {
       toast("Please enter filter and value");
     }
@@ -29,7 +28,7 @@ const FilterOptions = ({ onFilterChange }) => {
         placeholder="Enter value here..."
         onChange={(e) => setFilterValue(e.target.value)}
       />
-      <button id="filbut" onClick={handleFilter}>
+      <button id="filbut" onClick={handleApply}>
         Apply Filter
       </button>
     </div>
